@@ -1,6 +1,6 @@
 // @flow
-import { SELECT_ITEM, SET_ITEMS } from '../actions/items';
-import type { Action } from './types';
+import {SELECT_ITEM, SET_ITEMS} from '../actions/items';
+import type {Action} from './types';
 
 const initialState = {
   items: [],
@@ -8,7 +8,7 @@ const initialState = {
   newItem: {
     title: 'New'
   }
-}
+};
 
 export default function (state = initialState, action: Action) {
   switch (action.type) {
@@ -16,12 +16,12 @@ export default function (state = initialState, action: Action) {
       return {
         ...state,
         items: action.items
-      }
+      };
     case SELECT_ITEM:
       return {
         ...state,
         item: action.item
-      }
+      };
     default:
       return state;
   }

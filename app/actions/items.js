@@ -1,18 +1,56 @@
 // @flow
-import type { GetState, Dispatch } from '../reducers/types';
+import Store from 'electron-store';
+import UUID from 'uuid/v1';
+import _ from 'lodash';
+import type { Dispatch } from '../reducers/types';
 
 export const SELECT_ITEM = 'SELECT_ITEM';
 export const SET_ITEMS = 'SET_ITEMS';
-export const CREATE_NEW_ITEM = 'CREATE_NEW_ITEM';
 
-let foo = [
-  { title: ' I am an item'}
-]
+const ItemStore = new Store();
 
-export function setItems () {
+export function getItemsFromStore () {
+  return (dispatch: Dispatch) =>  {
+    const storeItems = ItemStore.get('items') || [];
+    dispatch(setItems(storeItems));
+  }
+}
+
+export function purgeStore () {
+  return (dispatch: Dispatch) =>  {
+    ItemStore.delete('items');
+    dispatch(getItemsFromStore());
+  }
+}
+
+export function removeItem (itemId) {
+  return (dispatch: Dispatch) =>  {
+    // find the item by id
+    const storeItems = ItemStore.get('items') || [];
+    const item = _.find(storeItems, (i) => i.id === itemId);
+    _.pull(storeItems, item);
+    ItemStore.set('items', storeItems);
+    dispatch(getItemsFromStore());
+  }
+}
+
+export function updateItemContent (itemId, itemContent) {
+  return (dispatch: Dispatch) =>  {
+    const storeItems = ItemStore.get('items') || [];
+    const updateItemIndex = _.findIndex(storeItems, (i) => i.id === itemId);
+    const updateItem = _.find(storeItems, (i) => i.id === itemId);
+    updateItem.content = itemContent;
+    storeItems.splice(updateItemIndex, 1, updateItem);
+    ItemStore.set('items', storeItems);
+    dispatch(getItemsFromStore());
+    dispatch(selectItem(updateItem));
+  }
+}
+
+export function setItems (items) {
   return {
     type: SET_ITEMS,
-    items: foo
+    items
   };
 }
 
@@ -23,13 +61,14 @@ export function selectItem (item) {
   };
 }
 
-export function createNewItem (item) {
+export function createNewItem (itemName) {
   return (dispatch: Dispatch) =>  {
-    // add to db
-    // then update items
-    foo.push({
-      title: 'I am another'
-    })
-    dispatch(setItems());
+    const newItem = Object.assign({}, {title: itemName});
+    newItem.id = UUID();
+    newItem.content = 'FOR doc in things';
+    const storeItems = ItemStore.get('items') || [];
+    storeItems.push(newItem);
+    ItemStore.set('items', storeItems);
+    dispatch(getItemsFromStore());
   }
 }
