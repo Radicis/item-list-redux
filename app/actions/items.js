@@ -2,7 +2,7 @@
 import Store from 'electron-store';
 import UUID from 'uuid/v1';
 import _ from 'lodash';
-import type { Dispatch } from '../reducers/types';
+import type { Dispatch, GetState } from '../reducers/types';
 
 export const SELECT_ITEM = 'SELECT_ITEM';
 export const SET_ITEMS = 'SET_ITEMS';
@@ -24,12 +24,17 @@ export function purgeStore () {
 }
 
 export function removeItem (itemId) {
-  return (dispatch: Dispatch) =>  {
+  return (dispatch: Dispatch, getState: GetState) =>  {
     // find the item by id
     const storeItems = ItemStore.get('items') || [];
     const item = _.find(storeItems, (i) => i.id === itemId);
     _.pull(storeItems, item);
     ItemStore.set('items', storeItems);
+    // Check if item was selected and deselect if it was
+    const selectedItem = getState().items.item;
+    if (selectedItem && itemId === selectedItem.id) {
+      dispatch(selectItem());
+    }
     dispatch(getItemsFromStore());
   }
 }
@@ -57,7 +62,7 @@ export function setItems (items) {
 export function selectItem (item) {
   return {
     type: SELECT_ITEM,
-    item
+    item: item || null // to deselect
   };
 }
 

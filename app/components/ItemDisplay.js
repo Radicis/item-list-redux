@@ -3,8 +3,6 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import AceEditor from 'react-ace';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
 
 import 'brace/mode/mysql';
 import 'brace/theme/monokai';
@@ -28,7 +26,7 @@ class ItemDisplay extends Component<Props> {
   componentDidUpdate () {
     const { item } = this.props;
     const { content } = this.state;
-    if (!_.isEqual(item.content, content)) {
+    if (item && !_.isEqual(item.content, content)) {
       this.setState({
         content: item.content,
       });
@@ -41,32 +39,23 @@ class ItemDisplay extends Component<Props> {
       clearTimeout(timer);
     }
     const { updateItemContent, item } = this.props;
-    // this.setState({
-    //   timer: setTimeout(() => {updateItemContent(item.id, value)}, 1000)
-    // });
     updateItemContent(item.id, value);
   };
 
   render() {
     const { item } = this.props;
     const { content } = this.state;
+    if (item) {
     return (
-      <Grid container>
-        <Grid item xs={12}>
-          <Typography variant="title" gutterBottom>
-            { item.title }
-          </Typography>
-        </Grid>
-        <Grid item xs={12}>
           <AceEditor
             mode="mysql"
             theme="monokai"
             name="query"
-            fontSize={12}
+            fontSize={14}
             showPrintMargin={false}
             showGutter
             width="100%"
-            height="500px"
+            height="100%"
             highlightActiveLine
             value={content}
             onChange={this.updateContent}
@@ -77,9 +66,9 @@ class ItemDisplay extends Component<Props> {
               showLineNumbers: true,
               tabSize: 2,
             }}/>
-        </Grid>
-      </Grid>
     );
+          }
+          return <div></div>
   }
 }
 function mapStateToProps(state) {

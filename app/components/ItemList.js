@@ -5,27 +5,36 @@ import {connect} from 'react-redux';
 import List from '@material-ui/core/List';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
+import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import _ from 'lodash';
-
 import ItemListItem from './ItemListItem';
 import * as itemActions from '../actions/items';
 
-import CreateNewItem from '../dialogs/CreateItem';
+const styles = theme => ({
+  list: {
+    maxHeight: 420,
+    overflowY: 'auto',
+    overflowX: 'hiddden',
+    marginRight: -20
+  },
+  search: {
+    border: 0,
+    margin: 10
+  }
+});
 
 type Props = {
   items: array,
   selectItem: () => void,
   getItemsFromStore: () => void,
-  removeItem: () => void,
-  createNewItem: () => void
+  removeItem: () => void
 };
 
 class ItemList extends Component<Props> {
   props: Props;
 
   state = {
-     dialogOpen: false,
      filterItems: []
   };
 
@@ -47,19 +56,7 @@ class ItemList extends Component<Props> {
       });
     }
   }
-
-  openDialog = () => {
-    this.setState({
-      dialogOpen: true,
-    });
-  };
-
-  closeDialog = () => {
-    this.setState({
-      dialogOpen: false,
-    });
-  };
-
+  
   filterItems = (event) => {
     const { items } = this.props;
     this.setState({
@@ -67,45 +64,40 @@ class ItemList extends Component<Props> {
     });
   };
 
+  removeItem = (itemId) => {
+    // show prompt
+    const { removeItem } = this.props;
+    removeItem(itemId);
+  }
+
   render() {
     const {
       selectItem,
       removeItem,
-      createNewItem
+      classes
     } = this.props;
     const {
-      dialogOpen,
       filterItems
     } = this.state;
     return (
-      <div>
       <Grid container>
-        <Grid item xs={12}>
-          <Button variant="contained" color="secondary" onClick={this.openDialog}>Create New</Button>
-        </Grid>
         <Grid item xs={12}>
           <TextField
             autoFocus
-            id="outlined-full-width"
-            style={{ margin: 8 }}
-            placeholder="Search"
-            fullWidth
+            className={classes.search}
+            placeholder="Search.."
             margin="normal"
-            onChange={this.filterItems}
             variant="outlined"
-            InputLabelProps={{
-              shrink: true,
-            }}
+            fullWidth
+            onChange={this.filterItems}
           />
         </Grid>
         <Grid item xs={12}>
-          <List component="nav">
-            {filterItems.map((item) => <ItemListItem key={item.id} item={item} selectItem={selectItem} removeItem={removeItem}/>)}
+          <List component="nav" className={classes.list}>
+            {filterItems.map((item) => <ItemListItem key={item.id} item={item} selectItem={selectItem} removeItem={this.removeItem}/>)}
           </List>
         </Grid>
       </Grid>
-        <CreateNewItem open={dialogOpen} handleOk={createNewItem} handleClose={this.closeDialog}/>
-      </div>
     );
   }
 }
@@ -122,4 +114,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(ItemList);
+)(withStyles(styles)(ItemList));
