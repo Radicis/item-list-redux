@@ -4,17 +4,14 @@
  */
 @import '~@fortawesome/fontawesome-free/css/all.css';
 
-html, body, #root, .main-container {
+html, body, #root {
   padding: 0;
   margin: 0;
-  height:100%
+  height:100%;
+  overflow-y: hidden;
 }
 
 .title {
-  padding: 0px 10px;
-  font-family: Roboto;
-  background: #424242;
-  color: #ccc;
   -webkit-app-region: drag
 }
 
@@ -23,11 +20,11 @@ html, body, #root, .main-container {
 }
 
 ::-webkit-scrollbar-track {
-  -webkit-box-shadow: inset 0 0 3px rgba(0,0,0,0.3); 
+  -webkit-box-shadow: inset 0 0 3px rgba(0,0,0,0.3);
   border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb {
   border-radius: 10px;
-  -webkit-box-shadow: inset 0 0 3px rgba(0,0,0,0.5); 
+  -webkit-box-shadow: inset 0 0 3px rgba(0,0,0,0.5);
 }

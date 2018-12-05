@@ -1,25 +1,37 @@
 // @flow
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import {bindActionCreators} from 'redux';
-import { withStyles } from '@material-ui/core/styles';
+import {withStyles} from '@material-ui/core/styles';
+import AddIcon from '@material-ui/icons/Add';
+import Fab from '@material-ui/core/Fab';
 import {connect} from 'react-redux';
 import ItemList from '../components/ItemList';
 import ItemDisplay from '../components/ItemDisplay';
 import * as itemActions from '../actions/items';
 import CreateNewItem from '../dialogs/CreateItem';
-import AddIcon from '@material-ui/icons/Add';
-import Fab from '@material-ui/core/Fab';
 
 type Props = {
-  createNewItem: () => void
+  createNewItem: () => void,
+  classes: {}
 };
 
 const styles = theme => ({
+  mainContainer: {
+    height: "100%"
+  },
+  title: {
+    padding: "5px 10px",
+    fontFamily: "Roboto, sans-serif",
+    background: "#424242",
+    color: "#ccc",
+    WebkitAppRegion: 'drag'
+  },
   paper: {
     height: "100%",
-    overflow: 'hidden'
+    overflow: 'hidden',
+    borderRadius: 0
   },
   grid: {
     height: "100%",
@@ -37,7 +49,7 @@ class MainPage extends Component<Props> {
 
   state = {
     dialogOpen: false,
- };
+  };
 
   openDialog = () => {
     this.setState({
@@ -52,31 +64,31 @@ class MainPage extends Component<Props> {
   };
 
   createNewItem = (itemName) => {
-    const { createNewItem } = this.props;
+    const {createNewItem} = this.props;
     createNewItem(itemName);
     this.closeDialog();
-  }
+  };
 
   render() {
-    const { classes, createNewItem } = this.props;
-    const { dialogOpen } = this.state;
+    const {classes} = this.props;
+    const {dialogOpen} = this.state;
     return (
-      <div class="main-container">
-      <div class="title">The Thing Storerer!</div>
-      <Paper className={classes.paper}>
-        <Grid container spacing={24} className={classes.grid}>
-          <Grid item xs={4}>
-            <ItemList/>
+      <div className={classes.mainContainer}>
+        <div className={classes.title}>:The Thing Storerer: </div>
+        <Paper className={classes.paper}>
+          <Grid container spacing={24} className={classes.grid}>
+            <Grid item xs={4}>
+              <ItemList/>
+            </Grid>
+            <Grid item xs={8}>
+              <ItemDisplay/>
+            </Grid>
           </Grid>
-          <Grid item xs={8}>
-            <ItemDisplay/>
-          </Grid>
-        </Grid>
-        <CreateNewItem open={dialogOpen} handleOk={this.createNewItem} handleClose={this.closeDialog}/>
-        <Fab color="primary" onClick={this.openDialog} className={classes.fab}>
-          <AddIcon />
-        </Fab>
-      </Paper>
+          <CreateNewItem open={dialogOpen} handleOk={this.createNewItem} handleClose={this.closeDialog}/>
+          <Fab color="primary" onClick={this.openDialog} className={classes.fab}>
+            <AddIcon/>
+          </Fab>
+        </Paper>
       </div>
     )
   }

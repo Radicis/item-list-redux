@@ -3,19 +3,19 @@ import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import List from '@material-ui/core/List';
-import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import _ from 'lodash';
 import ItemListItem from './ItemListItem';
 import * as itemActions from '../actions/items';
+import DeleteConfirm from '../dialogs/DeleteConfirm';
 
-const styles = theme => ({
+const styles = () => ({
   list: {
-    maxHeight: 420,
+    height: 440,
     overflowY: 'auto',
-    overflowX: 'hiddden',
+    overflowX: 'hidden',
     marginRight: -20
   },
   search: {
@@ -28,23 +28,27 @@ type Props = {
   items: array,
   selectItem: () => void,
   getItemsFromStore: () => void,
-  removeItem: () => void
+  removeItem: () => void,
+  classes: {}
 };
 
 class ItemList extends Component<Props> {
   props: Props;
 
   state = {
-     filterItems: []
+     filterItems: [],
+     dialogOpen: false,
+     itemId: null
   };
 
   componentWillMount() {
     const {
-      getItemsFromStore
+      getItemsFromStore,
+      items
     } = this.props;
     getItemsFromStore();
     this.setState({
-      filterItems: this.props.items,
+      filterItems: items,
     });
   }
 
@@ -56,7 +60,7 @@ class ItemList extends Component<Props> {
       });
     }
   }
-  
+
   filterItems = (event) => {
     const { items } = this.props;
     this.setState({
@@ -64,20 +68,34 @@ class ItemList extends Component<Props> {
     });
   };
 
+  openDeleteDialog = (itemId) => {
+    this.setState({
+      dialogOpen: true,
+      itemId
+    });
+  };
+
+  closeDialog = () => {
+    this.setState({
+      dialogOpen: false,
+    });
+  };
+
   removeItem = (itemId) => {
-    // show prompt
     const { removeItem } = this.props;
     removeItem(itemId);
-  }
+    this.closeDialog();
+  };
 
   render() {
     const {
       selectItem,
-      removeItem,
       classes
     } = this.props;
     const {
-      filterItems
+      filterItems,
+      dialogOpen,
+      itemId
     } = this.state;
     return (
       <Grid container>
@@ -86,17 +104,18 @@ class ItemList extends Component<Props> {
             autoFocus
             className={classes.search}
             placeholder="Search.."
-            margin="normal"
+            margin="dense"
             variant="outlined"
             fullWidth
             onChange={this.filterItems}
           />
         </Grid>
         <Grid item xs={12}>
-          <List component="nav" className={classes.list}>
-            {filterItems.map((item) => <ItemListItem key={item.id} item={item} selectItem={selectItem} removeItem={this.removeItem}/>)}
+          <List component="nav" className={classes.list} dense>
+            {filterItems.map((item) => <ItemListItem key={item.id} item={item} selectItem={selectItem} removeItem={() => this.openDeleteDialog(item.id)}/>)}
           </List>
         </Grid>
+        <DeleteConfirm open={dialogOpen} itemId={itemId} handleOk={this.removeItem} handleClose={this.closeDialog}/>
       </Grid>
     );
   }

@@ -54,10 +54,10 @@ export default class CreateNewItem extends Component<Props> {
             />
           </DialogContent>
           <DialogActions>
-            <Button onClick={handleClose} color="secondary">
+            <Button onClick={handleClose} color="primary">
               Cancel
             </Button>
-            <Button disabled={!newItemName} onClick={() => handleOk(newItemName)} color="secondary">
+            <Button disabled={!newItemName} onClick={() => handleOk(newItemName)} color="primary">
               Ok
             </Button>
           </DialogActions>

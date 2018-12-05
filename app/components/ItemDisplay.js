@@ -51,7 +51,7 @@ class ItemDisplay extends Component<Props> {
             mode="mysql"
             theme="monokai"
             name="query"
-            fontSize={14}
+            fontSize={12}
             showPrintMargin={false}
             showGutter
             width="100%"
@@ -68,7 +68,7 @@ class ItemDisplay extends Component<Props> {
             }}/>
     );
           }
-          return <div></div>
+          return <div />
   }
 }
 function mapStateToProps(state) {
