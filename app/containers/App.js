@@ -1,5 +1,5 @@
 // @flow
-import * as React from 'react';
+import React, { Component } from 'react';
 import { createMuiTheme, MuiThemeProvider} from '@material-ui/core/styles';
 
 const theme = createMuiTheme({
@@ -18,7 +18,7 @@ type Props = {
   children: React.Node
 };
 
-export default class App extends React.Component<Props> {
+export default class App extends Component<Props> {
   props: Props;
 
   render() {

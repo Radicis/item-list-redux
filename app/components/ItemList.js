@@ -41,6 +41,9 @@ class ItemList extends Component<Props> {
      itemId: null
   };
 
+  /**
+   * On mount, get the items from the store and set the filter
+   */
   componentWillMount() {
     const {
       getItemsFromStore,
@@ -52,6 +55,10 @@ class ItemList extends Component<Props> {
     });
   }
 
+  /**
+   * On update, update the filterItems
+   * @param prevProps
+   */
   componentDidUpdate (prevProps) {
     const { items } = this.props;
     if (!_.isEqual(prevProps.items, items)) {
@@ -61,6 +68,10 @@ class ItemList extends Component<Props> {
     }
   }
 
+  /**
+   * Filter the list items based on search
+   * @param event
+   */
   filterItems = (event) => {
     const { items } = this.props;
     this.setState({
@@ -68,6 +79,10 @@ class ItemList extends Component<Props> {
     });
   };
 
+  /**
+   * Displays the delete dialog
+   * @param itemId
+   */
   openDeleteDialog = (itemId) => {
     this.setState({
       dialogOpen: true,
@@ -75,12 +90,19 @@ class ItemList extends Component<Props> {
     });
   };
 
+  /**
+   * Closes the dialog
+   */
   closeDialog = () => {
     this.setState({
       dialogOpen: false,
     });
   };
 
+  /**
+   * Removes the item from the store and state
+   * @param itemId
+   */
   removeItem = (itemId) => {
     const { removeItem } = this.props;
     removeItem(itemId);
@@ -123,7 +145,6 @@ class ItemList extends Component<Props> {
 
 const mapStateToProps = (state) => ({
   items: state.items.items,
-  itemCount: state.items.items.length
 });
 
 function mapDispatchToProps(dispatch) {

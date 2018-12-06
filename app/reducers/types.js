@@ -1,18 +1,15 @@
 import type { Dispatch as ReduxDispatch, Store as ReduxStore } from 'redux';
 
-export type selectedItemStateType = {
-  +item: object
-};
-
 export type itemsStateType = {
-  +items: array
+  +items: array,
+  +item: object
 };
 
 export type Action = {
   +type: string
 };
 
-export type GetState = () => selectedItemStateType;
+export type GetState = () => itemsStateType;
 
 export type Dispatch = ReduxDispatch<Action>;
 

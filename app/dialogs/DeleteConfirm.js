@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from 'react';
+import React from 'react';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from "@material-ui/core/DialogActions";
@@ -12,32 +12,30 @@ type Props = {
   handleOk: () => void
 };
 
-export default class DeleteConfirm extends Component<Props> {
-  props: Props;
+const DeleteConfirm = (props: Props) => {
+  const {
+    open,
+    itemId,
+    handleClose,
+    handleOk
+  } = props;
+  return (
+    <Dialog
+      open={open}
+      onClose={handleClose}
+      aria-labelledby="form-dialog-title"
+    >
+      <DialogTitle id="form-dialog-title">Really Delete?</DialogTitle>
+      <DialogActions>
+        <Button onClick={handleClose} color="primary">
+          Cancel
+        </Button>
+        <Button onClick={() => handleOk(itemId)} color="primary">
+          Ok
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
+};
 
-  render() {
-    const {
-      open,
-      itemId,
-      handleClose,
-      handleOk
-    } = this.props;
-    return (
-        <Dialog
-          open={open}
-          onClose={handleClose}
-          aria-labelledby="form-dialog-title"
-        >
-          <DialogTitle id="form-dialog-title">Really Delete?</DialogTitle>
-          <DialogActions>
-            <Button onClick={handleClose} color="primary">
-              Cancel
-            </Button>
-            <Button onClick={() => handleOk(itemId)} color="primary">
-              Ok
-            </Button>
-          </DialogActions>
-        </Dialog>
-    );
-  }
-}
+export default DeleteConfirm;

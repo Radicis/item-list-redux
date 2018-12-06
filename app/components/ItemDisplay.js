@@ -3,26 +3,28 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import AceEditor from 'react-ace';
+import _ from "lodash";
 
 import 'brace/mode/mysql';
 import 'brace/theme/monokai';
 
 import * as itemActions from '../actions/items';
-import _ from "lodash";
 
 type Props = {
   item: object,
-  updateItemContent: () => void
+  updateItem: () => void
 };
 
 class ItemDisplay extends Component<Props> {
   props: Props;
 
   state = {
-    timer: null,
     content: ''
   };
 
+  /**
+   * On update sync the local state content to that of the Ace editor
+   */
   componentDidUpdate () {
     const { item } = this.props;
     const { content } = this.state;
@@ -33,42 +35,43 @@ class ItemDisplay extends Component<Props> {
     }
   }
 
+  /**
+   * Dispatch the item update action to update the item int he store and state
+   * @param value - string value
+   */
   updateContent = (value) => {
-    const { timer } = this.state;
-    if(timer) {
-      clearTimeout(timer);
-    }
-    const { updateItemContent, item } = this.props;
-    updateItemContent(item.id, value);
+    const { updateItem, item } = this.props;
+    const updatedItem = { content: value };
+    updateItem(item.id,  updatedItem );
   };
 
   render() {
     const { item } = this.props;
     const { content } = this.state;
     if (item) {
-    return (
-          <AceEditor
-            mode="mysql"
-            theme="monokai"
-            name="query"
-            fontSize={12}
-            showPrintMargin={false}
-            showGutter
-            width="100%"
-            height="100%"
-            highlightActiveLine
-            value={content}
-            onChange={this.updateContent}
-            setOptions={{
-              enableBasicAutocompletion: false,
-              enableLiveAutocompletion: false,
-              enableSnippets: false,
-              showLineNumbers: true,
-              tabSize: 2,
-            }}/>
-    );
-          }
-          return <div />
+      return (
+        <AceEditor
+          mode="mysql"
+          theme="monokai"
+          name="query"
+          fontSize={12}
+          showPrintMargin={false}
+          showGutter
+          width="100%"
+          height="100%"
+          highlightActiveLine
+          value={content}
+          onChange={this.updateContent}
+          setOptions={{
+            enableBasicAutocompletion: false,
+            enableLiveAutocompletion: false,
+            enableSnippets: false,
+            showLineNumbers: true,
+            tabSize: 2,
+          }}/>
+      );
+    }
+    return <div/>
   }
 }
 function mapStateToProps(state) {

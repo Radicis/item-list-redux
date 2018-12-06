@@ -51,18 +51,28 @@ class MainPage extends Component<Props> {
     dialogOpen: false,
   };
 
+  /**
+   * Opens teh create new dialog
+   */
   openDialog = () => {
     this.setState({
       dialogOpen: true,
     });
   };
 
+  /**
+   * Closes the dialog
+   */
   closeDialog = () => {
     this.setState({
       dialogOpen: false,
     });
   };
 
+  /**
+   * Creates a new item in the store/state
+   * @param itemName - string name
+   */
   createNewItem = (itemName) => {
     const {createNewItem} = this.props;
     createNewItem(itemName);
@@ -70,8 +80,8 @@ class MainPage extends Component<Props> {
   };
 
   render() {
-    const {classes} = this.props;
-    const {dialogOpen} = this.state;
+    const { classes } = this.props;
+    const { dialogOpen } = this.state;
     return (
       <div className={classes.mainContainer}>
         <div className={classes.title}>:The Thing Storerer: </div>
@@ -94,7 +104,7 @@ class MainPage extends Component<Props> {
   }
 }
 
-const mapStateToProps = (state) => ({});
+const mapStateToProps = (state) => ({}); // needs to be here although not used
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators(itemActions, dispatch);

@@ -20,6 +20,10 @@ export default class CreateNewItem extends Component<Props> {
     newItemName: ''
   };
 
+  /**
+   * Updates the state when the text input changes
+   * @param event
+   */
   handleNameChange = event => {
     this.setState({
       newItemName: event.target.value,

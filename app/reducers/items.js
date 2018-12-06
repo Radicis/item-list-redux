@@ -1,13 +1,11 @@
 // @flow
-import {SELECT_ITEM, SET_ITEMS} from '../actions/items';
-import type {Action} from './types';
+import _ from 'lodash';
+import { SELECT_ITEM, SET_ITEMS, UPDATE_ITEM } from '../actions/items';
+import type { Action } from './types';
 
 const initialState = {
   items: [],
-  item: {},
-  newItem: {
-    title: 'New'
-  }
+  item: null
 };
 
 export default function (state = initialState, action: Action) {
@@ -21,6 +19,11 @@ export default function (state = initialState, action: Action) {
       return {
         ...state,
         item: action.item
+      };
+    case UPDATE_ITEM:
+      return {
+        ...state,
+        items: _.map(state.items, (i) => i.id === action.itemId ? _.assign(i, action.item) : i)
       };
     default:
       return state;

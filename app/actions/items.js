@@ -6,16 +6,28 @@ import type { Dispatch, GetState } from '../reducers/types';
 
 export const SELECT_ITEM = 'SELECT_ITEM';
 export const SET_ITEMS = 'SET_ITEMS';
+export const UPDATE_ITEM = 'UPDATE_ITEM';
 
 const ItemStore = new Store();
 
-export function getItemsFromStore () {
+/**
+ * Gets the items from the json store and sets the state
+ * @returns {Function}
+ */
+export function getItemsFromStore (itemId) {
   return (dispatch: Dispatch) =>  {
     const storeItems = ItemStore.get('items') || [];
     dispatch(setItems(storeItems));
+    if(itemId) {
+      dispatch(selectItem(itemId));
+    }
   }
 }
 
+/**
+ * Delets all items from the store and sets the state
+ * @returns {Function}
+ */
 export function purgeStore () {
   return (dispatch: Dispatch) =>  {
     ItemStore.delete('items');
@@ -23,7 +35,13 @@ export function purgeStore () {
   }
 }
 
+/**
+ * Removes an item from the store and state by id
+ * @param itemId - string id
+ * @returns {Function}
+ */
 export function removeItem (itemId) {
+  console.log(itemId);
   return (dispatch: Dispatch, getState: GetState) =>  {
     // find the item by id
     const storeItems = ItemStore.get('items') || [];
@@ -39,19 +57,46 @@ export function removeItem (itemId) {
   }
 }
 
-export function updateItemContent (itemId, itemContent) {
+/**
+ * Updates an item in the store by ID
+ * @param itemId - string
+ * @param updatedItem - object
+ * @returns {Function}
+ */
+export function updateItem (itemId, updatedItem) {
   return (dispatch: Dispatch) =>  {
     const storeItems = ItemStore.get('items') || [];
-    const updateItemIndex = _.findIndex(storeItems, (i) => i.id === itemId);
-    const updateItem = _.find(storeItems, (i) => i.id === itemId);
-    updateItem.content = itemContent;
-    storeItems.splice(updateItemIndex, 1, updateItem);
+
+    // Update the item in the store
+    _.map(storeItems, (i) => i.id === itemId ? _.assign(i, updatedItem) : i);
+
+    // Update the store with the new array
     ItemStore.set('items', storeItems);
-    dispatch(getItemsFromStore());
-    dispatch(selectItem(updateItem));
+
+    // Update the item in the state
+    dispatch(updateStateItem(itemId, updatedItem));
   }
 }
 
+/**
+ * Updates an item in the state
+ * @param itemId
+ * @param item
+ * @returns {{type: string, itemId: *, item: *}}
+ */
+export function updateStateItem (itemId, item) {
+  return {
+    type: UPDATE_ITEM,
+    itemId,
+    item
+  }
+}
+
+/**
+ * Sets the state items []
+ * @param items
+ * @returns {{type: string, items: *}}
+ */
 export function setItems (items) {
   return {
     type: SET_ITEMS,
@@ -59,6 +104,11 @@ export function setItems (items) {
   };
 }
 
+/**
+ * Sets the selected item in the state or deselected will null
+ * @param item
+ * @returns {{type: string, item: (*|null)}}
+ */
 export function selectItem (item) {
   return {
     type: SELECT_ITEM,
@@ -66,7 +116,13 @@ export function selectItem (item) {
   };
 }
 
+/**
+ * Creates a new item in the store
+ * @param itemName
+ * @returns {Function}
+ */
 export function createNewItem (itemName) {
+  console.log('foo');
   return (dispatch: Dispatch) =>  {
     const newItem = Object.assign({}, {title: itemName});
     newItem.id = UUID();

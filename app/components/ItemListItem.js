@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from 'react';
+import React from 'react';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
@@ -12,26 +12,25 @@ type Props = {
   removeItem: () => void
 };
 
-export default class ItemListItem extends Component<Props> {
-  props: Props;
-
-  render() {
-    const {
-      item,
-      selectItem,
-      removeItem
-    } = this.props;
-    return (
-      <div>
+const ItemListItem = (props: Props) => {
+  const {
+    item,
+    selectItem,
+    removeItem
+  } = props;
+  return (
+    <div>
       <ListItem button onClick={() => selectItem(item)}>
-        <ListItemText primary={item.title} />
+        <ListItemText primary={item.title}/>
         <ListItemSecondaryAction>
           <IconButton aria-label="Delete" onClick={() => removeItem(item.id)}>
-            <DeleteIcon />
+            <DeleteIcon style={{fontSize: 20}}/>
           </IconButton>
         </ListItemSecondaryAction>
       </ListItem>
     </div>
-    );
-  }
-}
+  );
+};
+
+export default ItemListItem;
+
