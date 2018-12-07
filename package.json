@@ -56,8 +56,8 @@
   },
   "main": "./app/main.prod.js",
   "build": {
-    "productName": "ElectronReact",
-    "appId": "org.develar.ElectronReact",
+    "productName": "ItemList",
+    "appId": "org.develar.ItemList",
     "files": [
       "app/dist/",
       "app/app.html",
