@@ -122,11 +122,10 @@ export function selectItem (item) {
  * @returns {Function}
  */
 export function createNewItem (itemName) {
-  console.log('foo');
   return (dispatch: Dispatch) =>  {
     const newItem = Object.assign({}, {title: itemName});
     newItem.id = UUID();
-    newItem.content = 'FOR doc in things';
+    newItem.content = 'Here be things';
     const storeItems = ItemStore.get('items') || [];
     storeItems.push(newItem);
     ItemStore.set('items', storeItems);
