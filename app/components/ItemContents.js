@@ -1,17 +1,14 @@
 // @flow
 import React, { Component } from 'react';
-import AceEditor from 'react-ace';
 import _ from 'lodash';
-
-import 'brace/mode/mysql';
-import 'brace/theme/monokai';
+import Editor from './Editor';
 
 type Props = {
   item: object,
   updateItem: () => void
 };
 
-class ItemDisplayContents extends Component<Props> {
+export default class ItemContents extends Component<Props> {
   props: Props;
 
   state = {
@@ -19,6 +16,13 @@ class ItemDisplayContents extends Component<Props> {
     aceTheme: 'monokai',
     aceMode: 'mysql'
   };
+
+  componentWillMount() {
+    const { item } = this.props;
+    this.setState({
+      content: item.content
+    });
+  }
 
   /**
    * On update sync the local state content to that of the Ace editor
@@ -28,37 +32,26 @@ class ItemDisplayContents extends Component<Props> {
     const { content } = this.state;
     if (item && !_.isEqual(item.content, content)) {
       this.setState({
-        content: item.content
+        content: content
       });
     }
   }
 
+  /**
+   * Dispatch the item update action to update the item int he store and state
+   * @param value - string value
+   */
+  updateContent = value => {
+    const { updateItem, item } = this.props;
+    const updatedItem = { content: value };
+    updateItem(item.id, updatedItem);
+  };
+
   render() {
-    const { item } = this.props;
-    const { content, aceTheme, aceMode } = this.state;
+    const { item, aceTheme } = this.props;
+    const { content } = this.state;
     return (
-      <AceEditor
-        mode="mysql"
-        theme="monokai"
-        name="query"
-        fontSize={12}
-        showPrintMargin={false}
-        showGutter
-        width="100%"
-        height="100%"
-        highlightActiveLine
-        value={content}
-        onChange={this.updateContent}
-        setOptions={{
-          enableBasicAutocompletion: false,
-          enableLiveAutocompletion: false,
-          enableSnippets: false,
-          showLineNumbers: true,
-          tabSize: 2
-        }}
-        />
+      <Editor content={content} updateContent={this.updateContent} />
     );
   }
 }
-
-export default ItemDisplayContents;

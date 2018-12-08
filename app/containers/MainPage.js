@@ -8,7 +8,7 @@ import AddIcon from '@material-ui/icons/Add';
 import Fab from '@material-ui/core/Fab';
 import { connect } from 'react-redux';
 import ItemList from '../components/ItemList';
-import ItemContents from '../components/ItemContents'
+import ItemDisplay from './ItemDisplay'
 import * as itemActions from '../actions/items';
 import CreateNewItem from '../dialogs/CreateItem';
 
@@ -91,7 +91,7 @@ class MainPage extends Component<Props> {
               <ItemList />
             </Grid>
             <Grid item xs={8}>
-              <ItemContents />
+              <ItemDisplay />
             </Grid>
           </Grid>
           <CreateNewItem
