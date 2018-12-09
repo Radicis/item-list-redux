@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import { createMuiTheme, MuiThemeProvider} from '@material-ui/core/styles';
+import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 
 const theme = createMuiTheme({
   palette: {
@@ -9,8 +9,8 @@ const theme = createMuiTheme({
       light: '#ffffff',
       main: '#e8eaf6',
       dark: '#b6b8c3',
-      contrastText: '#000000',
-    },
+      contrastText: '#000000'
+    }
   }
 });
 

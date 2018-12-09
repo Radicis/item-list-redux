@@ -9,7 +9,7 @@ import * as itemActions from '../actions/items';
 
 import DeleteConfirm from '../dialogs/DeleteConfirm';
 import ListFilter from '../components/ListFilter';
-import ItemList from '../components/ItemList'
+import ItemList from '../components/ItemList';
 
 type Props = {
   items: array,
@@ -35,10 +35,9 @@ class ItemListContainer extends Component<Props> {
   componentWillMount() {
     const { getItemsFromStore, items } = this.props;
     getItemsFromStore();
-    let types = _.compact(_.map(items, i => i.type));
     this.setState({
       filterItems: items,
-      types
+      types: _.compact(_.map(items, i => i.type))
     });
   }
 
@@ -49,7 +48,6 @@ class ItemListContainer extends Component<Props> {
   componentDidUpdate(prevProps) {
     const { items } = this.props;
     if (!_.isEqual(prevProps.items, items)) {
-      console.log(_.compact(_.map(items, i => i.type)));
       this.setState({
         filterItems: items,
         types: _.compact(_.map(items, i => i.type))
@@ -84,17 +82,23 @@ class ItemListContainer extends Component<Props> {
   filterItems = event => {
     const { items } = this.props;
     const { filterType } = this.state;
+    let filterEvent = event.target.value;
+
+    let filteredItems = _.filter(
+      items,
+      i => filterType === 'all' || i.type === filterType
+    );
+
     this.setState({
-      filterItems: _.filter(items, i => {
-        if (filterType === 'all' || !i.type) {
-          return i.title.toUpperCase().includes(event.target.value.toUpperCase())
-        }
-        i.type === filterType && i.title.toUpperCase().includes(event.target.value.toUpperCase())       
-      })
+      filterItems: filterEvent
+        ? _.filter(filteredItems, i =>
+            i.title.toUpperCase().includes(filterEvent.toUpperCase())
+          )
+        : filteredItems
     });
   };
 
-    /**
+  /**
    * Filter the list items by type
    * @param event
    */
@@ -102,8 +106,9 @@ class ItemListContainer extends Component<Props> {
     const { filterItems } = this.state;
     const type = event.target.value;
     this.setState({
-      filterItems: _.filter(filterItems, i =>
-        type === 'all' || i.type === type
+      filterItems: _.filter(
+        filterItems,
+        i => type === 'all' || i.type === type
       ),
       filterType: type
     });
@@ -121,11 +126,16 @@ class ItemListContainer extends Component<Props> {
 
   render() {
     const { selectItem, classes } = this.props;
-    const { filterItems, dialogOpen, itemId, types, filterType  } = this.state;
+    const { filterItems, dialogOpen, itemId, types, filterType } = this.state;
     return (
       <Grid container>
         <Grid item xs={12}>
-          <ListFilter types={types} filterType={filterType} filterItemsByType={this.filterItemsByType} filterItems={this.filterItems} />
+          <ListFilter
+            types={types}
+            filterType={filterType}
+            filterItemsByType={this.filterItemsByType}
+            filterItems={this.filterItems}
+          />
         </Grid>
         <Grid item xs={12}>
           <ItemList

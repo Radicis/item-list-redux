@@ -24,7 +24,13 @@ class ListFilter extends Component<Props> {
   props: Props;
 
   render() {
-    const { classes, filterItems, filterItemsByType, types, filterType } = this.props;
+    const {
+      classes,
+      filterItems,
+      filterItemsByType,
+      types,
+      filterType
+    } = this.props;
     return (
       <Grid container>
         <Grid item xs={6} className={classes.filterField}>
@@ -36,7 +42,11 @@ class ListFilter extends Component<Props> {
           />
         </Grid>
         <Grid item xs={6} className={classes.filterField}>
-          <Select value={filterType || 'all'} onChange={filterItemsByType} fullWidth>
+          <Select
+            value={filterType || 'all'}
+            onChange={filterItemsByType}
+            fullWidth
+          >
             <MenuItem value="all">All</MenuItem>
             {types.map(type => (
               <MenuItem key={type} value={type}>

@@ -2,8 +2,8 @@
 import React from 'react';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Dialog from '@material-ui/core/Dialog';
-import DialogActions from "@material-ui/core/DialogActions";
-import Button from "@material-ui/core/Button";
+import DialogActions from '@material-ui/core/DialogActions';
+import Button from '@material-ui/core/Button';
 
 type Props = {
   open: boolean,
@@ -13,12 +13,7 @@ type Props = {
 };
 
 const DeleteConfirm = (props: Props) => {
-  const {
-    open,
-    itemId,
-    handleClose,
-    handleOk
-  } = props;
+  const { open, itemId, handleClose, handleOk } = props;
   return (
     <Dialog
       open={open}
