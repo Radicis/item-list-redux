@@ -13,6 +13,7 @@ import ItemList from '../components/ItemList';
 
 type Props = {
   items: array,
+  selectedItemId: string,
   selectItem: () => void,
   getItemsFromStore: () => void,
   removeItem: () => void
@@ -26,6 +27,7 @@ class ItemListContainer extends Component<Props> {
     dialogOpen: false,
     itemId: null,
     types: [],
+    isFiltered: false,
     filterType: 'all'
   };
 
@@ -124,22 +126,33 @@ class ItemListContainer extends Component<Props> {
     this.closeDialog();
   };
 
+  resetFilters = () => {
+    const { items } = this.props;
+    this.setState({
+      filterItems: items,
+      filterType: 'all'
+    });
+  };
+
   render() {
-    const { selectItem, classes } = this.props;
+    const { selectItem, classes, selectedItemId, items } = this.props;
     const { filterItems, dialogOpen, itemId, types, filterType } = this.state;
     return (
-      <Grid container>
-        <Grid item xs={12}>
+      <Grid container direction="column" spacing={16}>
+        <Grid item>
           <ListFilter
             types={types}
             filterType={filterType}
             filterItemsByType={this.filterItemsByType}
+            isFiltered={filterItems.length !== items.length}
+            resetFilters={this.resetFilters}
             filterItems={this.filterItems}
           />
         </Grid>
-        <Grid item xs={12}>
+        <Grid item>
           <ItemList
             items={filterItems}
+            selectedItemId={selectedItemId}
             selectItem={selectItem}
             removeItem={this.openDeleteDialog}
           />
@@ -156,7 +169,8 @@ class ItemListContainer extends Component<Props> {
 }
 
 const mapStateToProps = state => ({
-  items: state.items.items
+  items: state.items.items,
+  selectedItemId: state.items.item.id
 });
 
 function mapDispatchToProps(dispatch) {

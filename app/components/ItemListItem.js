@@ -4,23 +4,37 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import IconButton from '@material-ui/core/IconButton';
-import DeleteIcon from '@material-ui/icons/Delete';
+import Avatar from '@material-ui/core/Avatar';
+import DeleteForeverOutlinedIcon from '@material-ui/icons/DeleteForeverSharp';
+import CodeIcon from '@material-ui/icons/Code';
+import TextFieldsIcon from '@material-ui/icons/TextFields';
 
 type Props = {
   item: object,
+  selected: boolean,
   selectItem: () => void,
   removeItem: () => void
 };
 
 const ItemListItem = (props: Props) => {
-  const { item, selectItem, removeItem } = props;
+  const { item, selectItem, removeItem, selected } = props;
   return (
     <div>
-      <ListItem button onClick={() => selectItem(item)}>
-        <ListItemText primary={item.title} />
+      <ListItem button selected={selected} onClick={() => selectItem(item)}>
+        <Avatar>
+          {!item.type || item.type === 'text' ? (
+            <TextFieldsIcon />
+          ) : (
+            <CodeIcon />
+          )}
+        </Avatar>
+        <ListItemText
+          primary={item.title}
+          secondary={!item.type || item.type === 'text' ? '' : item.type}
+        />
         <ListItemSecondaryAction>
           <IconButton aria-label="Delete" onClick={() => removeItem(item.id)}>
-            <DeleteIcon style={{ fontSize: 20 }} />
+            <DeleteForeverOutlinedIcon style={{ fontSize: 20 }} />
           </IconButton>
         </ListItemSecondaryAction>
       </ListItem>

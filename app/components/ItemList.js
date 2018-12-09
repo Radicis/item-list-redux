@@ -9,7 +9,7 @@ import ListFilter from './ListFilter';
 
 const styles = () => ({
   list: {
-    height: 440,
+    height: 430,
     overflowY: 'auto',
     overflowX: 'hidden',
     marginRight: -20
@@ -27,11 +27,18 @@ class ItemList extends Component<Props> {
   props: Props;
 
   render() {
-    const { selectItem, classes, removeItem, items } = this.props;
+    const {
+      selectItem,
+      classes,
+      removeItem,
+      items,
+      selectedItemId
+    } = this.props;
     return (
-      <List component="nav" className={classes.list} dense>
+      <List className={classes.list} dense>
         {items.map(item => (
           <ItemListItem
+            selected={selectedItemId === item.id}
             key={item.id}
             item={item}
             selectItem={selectItem}

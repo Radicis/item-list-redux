@@ -21,11 +21,6 @@ class ItemDisplayContainer extends Component<Props> {
     aceTheme: 'monokai'
   };
 
-  componentWillUpdate() {
-    const { item } = this.props;
-    console.log(item);
-  }
-
   render() {
     const { classes, item, updateItem } = this.props;
     const { aceTheme } = this.state;

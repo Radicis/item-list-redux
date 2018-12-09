@@ -1,20 +1,10 @@
 // @flow
 import React, { Component } from 'react';
 import _ from 'lodash';
-import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Select from '@material-ui/core/Select';
 import Grid from '@material-ui/core/Grid';
 import MenuItem from '@material-ui/core/MenuItem';
-
-const styles = theme => ({
-  optionsContainer: {
-    marginBottom: '-15px' // make the code editor line up with the list
-  },
-  optionsField: {
-    padding: theme.spacing.unit * 2
-  }
-});
 
 type Props = {
   item: object,
@@ -28,6 +18,9 @@ class ItemOptions extends Component<Props> {
     modes: ['javascript', 'mysql', 'java', 'text']
   };
 
+  /**
+   * Updates the title of an object
+   */
   updateTitle = evt => {
     const { updateItem, item } = this.props;
     const updatedItem = { title: evt.target.value };
@@ -47,11 +40,11 @@ class ItemOptions extends Component<Props> {
     const { modes } = this.state;
     const { classes, item } = this.props;
     return (
-      <Grid container className={classes.optionsContainer}>
-        <Grid item xs={8} className={classes.optionsField}>
+      <Grid container spacing={24} justify="center" alignItems="center">
+        <Grid item xs={7}>
           <TextField value={item.title} fullWidth onChange={this.updateTitle} />
         </Grid>
-        <Grid item xs={4} className={classes.optionsField}>
+        <Grid item xs={4}>
           <Select
             value={item.type || 'text'}
             onChange={this.updateType}
@@ -69,4 +62,4 @@ class ItemOptions extends Component<Props> {
   }
 }
 
-export default withStyles(styles)(ItemOptions);
+export default ItemOptions;

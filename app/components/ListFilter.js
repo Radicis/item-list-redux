@@ -4,18 +4,15 @@ import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
-import { withStyles } from '@material-ui/core/styles';
-
-const styles = () => ({
-  filterField: {
-    padding: '15px'
-  }
-});
+import Button from '@material-ui/core/Button';
+import CancelIcon from '@material-ui/icons/Cancel';
 
 type Props = {
   items: array,
   filterItemsByType: () => void,
+  resetFilters: () => void,
   types: array,
+  isFiltered: boolean,
   filterType: string,
   classes: object
 };
@@ -29,23 +26,25 @@ class ListFilter extends Component<Props> {
       filterItems,
       filterItemsByType,
       types,
-      filterType
+      filterType,
+      isFiltered,
+      resetFilters
     } = this.props;
     return (
-      <Grid container>
-        <Grid item xs={6} className={classes.filterField}>
+      <Grid container direction="row" justify="center" alignItems="center" spacing={16}>
+        <Grid item xs={6}>
           <TextField
             autoFocus
             placeholder="Search.."
-            fullWidth
             onChange={filterItems}
+            fullWidth
           />
         </Grid>
-        <Grid item xs={6} className={classes.filterField}>
+        <Grid item xs={3}>
           <Select
             value={filterType || 'all'}
-            onChange={filterItemsByType}
             fullWidth
+            onChange={filterItemsByType}
           >
             <MenuItem value="all">All</MenuItem>
             {types.map(type => (
@@ -55,9 +54,14 @@ class ListFilter extends Component<Props> {
             ))}
           </Select>
         </Grid>
+        <Grid item xs={2}>
+          <Button disabled={!isFiltered} onClick={resetFilters}>
+            <CancelIcon />
+          </Button>
+        </Grid>
       </Grid>
     );
   }
 }
 
-export default withStyles(styles)(ListFilter);
+export default ListFilter;
