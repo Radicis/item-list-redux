@@ -1,15 +1,20 @@
 // @flow
-import React, {Component} from 'react';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { withStyles } from '@material-ui/core/styles';
+
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
-import {bindActionCreators} from 'redux';
-import {withStyles} from '@material-ui/core/styles';
 import AddIcon from '@material-ui/icons/Add';
+import SettingsIcon from '@material-ui/icons/Settings';
 import Fab from '@material-ui/core/Fab';
-import {connect} from 'react-redux';
-import ItemList from '../components/ItemList';
-import ItemDisplay from '../components/ItemDisplay';
+
 import * as itemActions from '../actions/items';
+
+import ItemListContainer from './ItemList';
+import ItemDisplayContainer from './ItemDisplay';
+import SetOptions from '../dialogs/SetOptions';
 import CreateNewItem from '../dialogs/CreateItem';
 
 type Props = {
@@ -19,28 +24,35 @@ type Props = {
 
 const styles = theme => ({
   mainContainer: {
-    height: "100%"
+    height: '100%' // allow for draggale header
   },
   title: {
-    padding: "5px 10px",
-    fontFamily: "Roboto, sans-serif",
-    background: "#424242",
-    color: "#ccc",
+    padding: '5px 10px',
+    fontFamily: 'Roboto, sans-serif',
+    background: '#424242',
+    color: '#ccc',
     WebkitAppRegion: 'drag'
   },
   paper: {
-    height: "100%",
+    height: '100%',
     overflow: 'hidden',
     borderRadius: 0
   },
   grid: {
-    height: "100%",
+    height: '100%',
     overflow: 'hidden'
   },
   fab: {
     position: 'absolute',
-    bottom: theme.spacing.unit * 2,
-    right: theme.spacing.unit * 2,
+    bottom: theme.spacing.unit * 2.5,
+    right: theme.spacing.unit * 2
+  },
+  fabOptions: {
+    position: 'absolute',
+    width: '36px',
+    height: '30px',
+    bottom: theme.spacing.unit * 10,
+    right: theme.spacing.unit * 2
   }
 });
 
@@ -48,24 +60,32 @@ class MainPage extends Component<Props> {
   props: Props;
 
   state = {
-    dialogOpen: false,
+    dialogCreateNewOpen: false,
+    dialogOptionsOpen: false
   };
 
   /**
-   * Opens teh create new dialog
+   * Opens the create new dialog
    */
-  openDialog = () => {
+  openCreateNewDialog = () => {
     this.setState({
-      dialogOpen: true,
+      dialogCreateNewOpen: true
+    });
+  };
+
+  openOptionsDialog = () => {
+    this.setState({
+      dialogOptionsOpen: true
     });
   };
 
   /**
    * Closes the dialog
    */
-  closeDialog = () => {
+  closeDialogs = () => {
     this.setState({
-      dialogOpen: false,
+      dialogCreateNewOpen: false,
+      dialogOptionsOpen: false
     });
   };
 
@@ -73,38 +93,65 @@ class MainPage extends Component<Props> {
    * Creates a new item in the store/state
    * @param itemName - string name
    */
-  createNewItem = (itemName) => {
-    const {createNewItem} = this.props;
+  createNewItem = itemName => {
+    const { createNewItem } = this.props;
     createNewItem(itemName);
-    this.closeDialog();
+    this.closeDialogs();
   };
 
   render() {
     const { classes } = this.props;
-    const { dialogOpen } = this.state;
+    const { dialogCreateNewOpen, dialogOptionsOpen } = this.state;
     return (
       <div className={classes.mainContainer}>
         <div className={classes.title}>:The Thing Storerer: </div>
         <Paper className={classes.paper}>
-          <Grid container spacing={24} className={classes.grid}>
+          <Grid
+            container
+            spacing={24}
+            alignItems="stretch"
+            className={classes.grid}
+          >
             <Grid item xs={4}>
-              <ItemList/>
+              <ItemListContainer />
             </Grid>
             <Grid item xs={8}>
-              <ItemDisplay/>
+              <ItemDisplayContainer />
             </Grid>
           </Grid>
-          <CreateNewItem open={dialogOpen} handleOk={this.createNewItem} handleClose={this.closeDialog}/>
-          <Fab color="primary" onClick={this.openDialog} className={classes.fab}>
-            <AddIcon/>
+          <Fab
+            color="primary"
+            onClick={this.openOptionsDialog}
+            className={classes.fabOptions}
+          >
+            <SettingsIcon />
+          </Fab>
+          <Fab
+            color="primary"
+            onClick={this.openCreateNewDialog}
+            className={classes.fab}
+          >
+            <AddIcon />
           </Fab>
         </Paper>
+
+        <CreateNewItem
+          open={dialogCreateNewOpen}
+          handleOk={this.createNewItem}
+          handleClose={this.closeDialogs}
+        />
+
+        <SetOptions
+          open={dialogOptionsOpen}
+          handleOk={this.setOptions}
+          handleClose={this.closeDialogs}
+        />
       </div>
-    )
+    );
   }
 }
 
-const mapStateToProps = (state) => ({}); // needs to be here although not used
+const mapStateToProps = state => ({}); // needs to be here although not used
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators(itemActions, dispatch);

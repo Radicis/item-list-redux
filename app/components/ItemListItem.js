@@ -13,18 +13,14 @@ type Props = {
 };
 
 const ItemListItem = (props: Props) => {
-  const {
-    item,
-    selectItem,
-    removeItem
-  } = props;
+  const { item, selectItem, removeItem } = props;
   return (
     <div>
       <ListItem button onClick={() => selectItem(item)}>
-        <ListItemText primary={item.title}/>
+        <ListItemText primary={item.title} />
         <ListItemSecondaryAction>
           <IconButton aria-label="Delete" onClick={() => removeItem(item.id)}>
-            <DeleteIcon style={{fontSize: 20}}/>
+            <DeleteIcon style={{ fontSize: 20 }} />
           </IconButton>
         </ListItemSecondaryAction>
       </ListItem>
@@ -33,4 +29,3 @@ const ItemListItem = (props: Props) => {
 };
 
 export default ItemListItem;
-

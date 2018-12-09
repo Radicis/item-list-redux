@@ -13,7 +13,7 @@ type Props = {
   handleOk: () => void
 };
 
-export default class CreateNewItem extends Component<Props> {
+export default class SetOptions extends Component<Props> {
   props: Props;
 
   state = {
@@ -39,7 +39,7 @@ export default class CreateNewItem extends Component<Props> {
         onClose={handleClose}
         aria-labelledby="form-dialog-title"
       >
-        <DialogTitle id="form-dialog-title">Create New Item</DialogTitle>
+        <DialogTitle id="form-dialog-title">Options</DialogTitle>
         <DialogContent>
           <TextField
             autoFocus

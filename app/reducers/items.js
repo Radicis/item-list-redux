@@ -5,10 +5,10 @@ import type { Action } from './types';
 
 const initialState = {
   items: [],
-  item: null
+  item: {}
 };
 
-export default function (state = initialState, action: Action) {
+export default function(state = initialState, action: Action) {
   switch (action.type) {
     case SET_ITEMS:
       return {
@@ -23,7 +23,10 @@ export default function (state = initialState, action: Action) {
     case UPDATE_ITEM:
       return {
         ...state,
-        items: _.map(state.items, (i) => i.id === action.itemId ? _.assign(i, action.item) : i)
+        items: _.map(state.items, i =>
+          i.id === action.itemId ? _.assign({}, i, action.item) : i
+        ),
+        item: _.assign({}, state.item, action.item)
       };
     default:
       return state;

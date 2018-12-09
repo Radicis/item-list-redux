@@ -14,25 +14,25 @@ const ItemStore = new Store();
  * Gets the items from the json store and sets the state
  * @returns {Function}
  */
-export function getItemsFromStore (itemId) {
-  return (dispatch: Dispatch) =>  {
+export function getItemsFromStore(itemId) {
+  return (dispatch: Dispatch) => {
     const storeItems = ItemStore.get('items') || [];
     dispatch(setItems(storeItems));
-    if(itemId) {
+    if (itemId) {
       dispatch(selectItem(itemId));
     }
-  }
+  };
 }
 
 /**
  * Delets all items from the store and sets the state
  * @returns {Function}
  */
-export function purgeStore () {
-  return (dispatch: Dispatch) =>  {
+export function purgeStore() {
+  return (dispatch: Dispatch) => {
     ItemStore.delete('items');
     dispatch(getItemsFromStore());
-  }
+  };
 }
 
 /**
@@ -40,12 +40,12 @@ export function purgeStore () {
  * @param itemId - string id
  * @returns {Function}
  */
-export function removeItem (itemId) {
+export function removeItem(itemId) {
   console.log(itemId);
-  return (dispatch: Dispatch, getState: GetState) =>  {
+  return (dispatch: Dispatch, getState: GetState) => {
     // find the item by id
     const storeItems = ItemStore.get('items') || [];
-    const item = _.find(storeItems, (i) => i.id === itemId);
+    const item = _.find(storeItems, i => i.id === itemId);
     _.pull(storeItems, item);
     ItemStore.set('items', storeItems);
     // Check if item was selected and deselect if it was
@@ -54,7 +54,7 @@ export function removeItem (itemId) {
       dispatch(selectItem());
     }
     dispatch(getItemsFromStore());
-  }
+  };
 }
 
 /**
@@ -63,19 +63,19 @@ export function removeItem (itemId) {
  * @param updatedItem - object
  * @returns {Function}
  */
-export function updateItem (itemId, updatedItem) {
-  return (dispatch: Dispatch) =>  {
+export function updateItem(itemId, updatedItem) {
+  return (dispatch: Dispatch) => {
     const storeItems = ItemStore.get('items') || [];
 
     // Update the item in the store
-    _.map(storeItems, (i) => i.id === itemId ? _.assign(i, updatedItem) : i);
+    _.map(storeItems, i => (i.id === itemId ? _.assign(i, updatedItem) : i));
 
     // Update the store with the new array
     ItemStore.set('items', storeItems);
 
     // Update the item in the state
     dispatch(updateStateItem(itemId, updatedItem));
-  }
+  };
 }
 
 /**
@@ -84,12 +84,12 @@ export function updateItem (itemId, updatedItem) {
  * @param item
  * @returns {{type: string, itemId: *, item: *}}
  */
-export function updateStateItem (itemId, item) {
+export function updateStateItem(itemId, item) {
   return {
     type: UPDATE_ITEM,
     itemId,
     item
-  }
+  };
 }
 
 /**
@@ -97,7 +97,7 @@ export function updateStateItem (itemId, item) {
  * @param items
  * @returns {{type: string, items: *}}
  */
-export function setItems (items) {
+export function setItems(items) {
   return {
     type: SET_ITEMS,
     items
@@ -109,7 +109,7 @@ export function setItems (items) {
  * @param item
  * @returns {{type: string, item: (*|null)}}
  */
-export function selectItem (item) {
+export function selectItem(item) {
   return {
     type: SELECT_ITEM,
     item: item || null // to deselect
@@ -121,15 +121,14 @@ export function selectItem (item) {
  * @param itemName
  * @returns {Function}
  */
-export function createNewItem (itemName) {
-  console.log('foo');
-  return (dispatch: Dispatch) =>  {
-    const newItem = Object.assign({}, {title: itemName});
+export function createNewItem(itemName) {
+  return (dispatch: Dispatch) => {
+    const newItem = Object.assign({}, { title: itemName });
     newItem.id = UUID();
-    newItem.content = 'FOR doc in things';
+    newItem.content = 'Here be things';
     const storeItems = ItemStore.get('items') || [];
     storeItems.push(newItem);
     ItemStore.set('items', storeItems);
     dispatch(getItemsFromStore());
-  }
+  };
 }
