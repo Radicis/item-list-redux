@@ -4,7 +4,6 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import Grid from '@material-ui/core/Grid';
-
 import * as itemActions from '../actions/items';
 
 import ItemContents from '../components/ItemContents';
@@ -15,26 +14,28 @@ type Props = {
   updateItem: () => void
 };
 
-class ItemDisplay extends Component<Props> {
+class ItemDisplayContainer extends Component<Props> {
   props: Props;
 
   state = {
     aceTheme: 'monokai'
   };
 
+  componentWillUpdate() {
+    const { item } = this.props;
+    console.log(item);
+  }
+
   render() {
-    const { item, updateItem } = this.props;
+    const { classes, item, updateItem } = this.props;
     const { aceTheme } = this.state;
-    if (item) {
+    if (!_.isEmpty(item)) {
       return (
-        <Grid container>
-          <Grid item xs={12}>
-          <ItemOptions
-              item={item}
-              updateItem={updateItem}
-            />
+        <Grid container spacing={24} direction="column">
+          <Grid item>
+            <ItemOptions item={item} updateItem={updateItem} />
           </Grid>
-          <Grid item xs={12}>
+          <Grid item>
             <ItemContents
               item={item}
               aceTheme={aceTheme}
@@ -61,4 +62,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(ItemDisplay);
+)(ItemDisplayContainer);

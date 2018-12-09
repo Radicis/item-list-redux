@@ -1,22 +1,31 @@
 // @flow
 import React, { Component } from 'react';
 import _ from 'lodash';
-
+import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Select from '@material-ui/core/Select';
 import Grid from '@material-ui/core/Grid';
 import MenuItem from '@material-ui/core/MenuItem';
 
+const styles = theme => ({
+  optionsContainer: {
+    marginBottom: '-15px' // make the code editor line up with the list
+  },
+  optionsField: {
+    padding: theme.spacing.unit * 2
+  }
+});
+
 type Props = {
-  item: {},
+  item: object,
   updateItem: () => void
 };
 
-export default class ItemOptions extends Component<Props> {
+class ItemOptions extends Component<Props> {
   props: Props;
 
   state = {
-    modes: ['javascript', 'sql', 'text']
+    modes: ['javascript', 'mysql', 'java', 'text']
   };
 
   updateTitle = evt => {
@@ -35,33 +44,29 @@ export default class ItemOptions extends Component<Props> {
   };
 
   render() {
-    // const { modes } = this.state;
-    const { item } = this.props;
+    const { modes } = this.state;
+    const { classes, item } = this.props;
     return (
-      <Grid container>
-        <Grid item xs={8}>
-          <TextField
-            id="title-input"
-            fullWidth
-            value={item.title}
-            onChange={this.updateTitle}
-          />
+      <Grid container className={classes.optionsContainer}>
+        <Grid item xs={8} className={classes.optionsField}>
+          <TextField value={item.title} fullWidth onChange={this.updateTitle} />
         </Grid>
-        <Grid item xs={4}>
+        <Grid item xs={4} className={classes.optionsField}>
           <Select
             value={item.type || 'text'}
             onChange={this.updateType}
             fullWidth
           >
-            <MenuItem value="">
-              <em>None</em>
-            </MenuItem>
-            <MenuItem value={'text'}>Text</MenuItem>
-            <MenuItem value={'mysql'}>Query</MenuItem>
-            <MenuItem value={'javascript'}>JavaScript</MenuItem>
+            {modes.map(mode => (
+              <MenuItem key={mode} value={mode}>
+                {mode}
+              </MenuItem>
+            ))}
           </Select>
         </Grid>
       </Grid>
     );
   }
 }
+
+export default withStyles(styles)(ItemOptions);

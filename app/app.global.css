@@ -11,10 +11,6 @@ html, body, #root {
   overflow-y: hidden;
 }
 
-.title {
-  -webkit-app-region: drag
-}
-
 ::-webkit-scrollbar {
   width: 12px;
 }
