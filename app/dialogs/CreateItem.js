@@ -13,7 +13,7 @@ type Props = {
   handleOk: () => void
 };
 
-export default class CreateNewItem extends Component<Props> {
+class CreateNewItem extends Component<Props> {
   props: Props;
 
   state = {
@@ -29,6 +29,15 @@ export default class CreateNewItem extends Component<Props> {
       newItemName: event.target.value
     });
   };
+
+  handleOk = () => {
+    const { handleOk } = this.props;
+    const { newItemName } = this.state;
+    handleOk(newItemName);
+    this.setState({
+      newItemName: ''
+    });   
+  }
 
   render() {
     const { open, handleClose, handleOk } = this.props;
@@ -57,7 +66,7 @@ export default class CreateNewItem extends Component<Props> {
           </Button>
           <Button
             disabled={!newItemName}
-            onClick={() => handleOk(newItemName)}
+            onClick={this.handleOk}
             color="primary"
           >
             Ok
@@ -67,3 +76,5 @@ export default class CreateNewItem extends Component<Props> {
     );
   }
 }
+
+export default CreateNewItem;

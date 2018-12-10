@@ -6,33 +6,37 @@ import TextField from '@material-ui/core/TextField';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 import Button from '@material-ui/core/Button';
+import Switch from '@material-ui/core/Switch';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 type Props = {
   open: boolean,
+  lightTheme: boolean,
   handleClose: () => void,
   handleOk: () => void
 };
 
-export default class SetOptions extends Component<Props> {
+class SetOptions extends Component<Props> {
   props: Props;
 
   state = {
-    newItemName: ''
+    lightTheme: false
   };
 
   /**
    * Updates the state when the text input changes
    * @param event
    */
-  handleNameChange = event => {
+  handleChange = name => event => {
     this.setState({
-      newItemName: event.target.value
+      [name]: event.target.checked
     });
   };
 
   render() {
     const { open, handleClose, handleOk } = this.props;
-    const { newItemName } = this.state;
+    const { lightTheme } = this.state;
     return (
       <Dialog
         open={open}
@@ -41,25 +45,24 @@ export default class SetOptions extends Component<Props> {
       >
         <DialogTitle id="form-dialog-title">Options</DialogTitle>
         <DialogContent>
-          <TextField
-            autoFocus
-            id="name"
-            label="Name"
-            value={newItemName}
-            onChange={this.handleNameChange}
-            type="text"
-            fullWidth
-          />
+          <FormGroup row>
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={lightTheme}
+                  onChange={this.handleChange('lightTheme')}
+                  value="light"
+                />
+              }
+              label="Vlad Mode"
+            />
+          </FormGroup>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">
             Cancel
           </Button>
-          <Button
-            disabled={!newItemName}
-            onClick={() => handleOk(newItemName)}
-            color="primary"
-          >
+          <Button onClick={() => handleOk({ type: lightTheme ? 'light' : 'dark' })} color="primary">
             Ok
           </Button>
         </DialogActions>
@@ -67,3 +70,5 @@ export default class SetOptions extends Component<Props> {
     );
   }
 }
+
+export default SetOptions;

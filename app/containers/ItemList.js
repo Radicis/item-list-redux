@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import List from '@material-ui/core/List';
+import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import _ from 'lodash';
 import * as itemActions from '../actions/items';
@@ -11,11 +11,25 @@ import DeleteConfirm from '../dialogs/DeleteConfirm';
 import ListFilter from '../components/ListFilter';
 import ItemList from '../components/ItemList';
 
+const styles = () => ({
+  fullHeight: {
+    height: '100%'
+  },
+  overflowScroll: {
+    height: '100%',
+    overflowY: 'auto',
+    overflowX: 'hidden',
+    paddingBottom: '100px !important' // gets overwritten
+  }
+});
+
 type Props = {
   items: array,
+  selectedItemId: string,
   selectItem: () => void,
   getItemsFromStore: () => void,
-  removeItem: () => void
+  removeItem: () => void,
+  classes: object
 };
 
 class ItemListContainer extends Component<Props> {
@@ -82,9 +96,9 @@ class ItemListContainer extends Component<Props> {
   filterItems = event => {
     const { items } = this.props;
     const { filterType } = this.state;
-    let filterEvent = event.target.value;
+    const filterEvent = event.target.value;
 
-    let filteredItems = _.filter(
+    const filteredItems = _.filter(
       items,
       i => filterType === 'all' || i.type === filterType
     );
@@ -124,22 +138,33 @@ class ItemListContainer extends Component<Props> {
     this.closeDialog();
   };
 
+  resetFilters = () => {
+    const { items } = this.props;
+    this.setState({
+      filterItems: items,
+      filterType: 'all'
+    });
+  };
+
   render() {
-    const { selectItem, classes } = this.props;
+    const { selectItem, classes, selectedItemId, items } = this.props;
     const { filterItems, dialogOpen, itemId, types, filterType } = this.state;
     return (
-      <Grid container>
+      <Grid container direction="row" alignItems="stretch" spacing={16} className={classes.fullHeight}>
         <Grid item xs={12}>
           <ListFilter
             types={types}
             filterType={filterType}
             filterItemsByType={this.filterItemsByType}
+            isFiltered={filterItems.length !== items.length}
+            resetFilters={this.resetFilters}
             filterItems={this.filterItems}
           />
         </Grid>
-        <Grid item xs={12}>
+        <Grid item className={classes.overflowScroll} xs={12}>
           <ItemList
             items={filterItems}
+            selectedItemId={selectedItemId}
             selectItem={selectItem}
             removeItem={this.openDeleteDialog}
           />
@@ -156,7 +181,8 @@ class ItemListContainer extends Component<Props> {
 }
 
 const mapStateToProps = state => ({
-  items: state.items.items
+  items: state.items.items,
+  selectedItemId: state.items.item.id
 });
 
 function mapDispatchToProps(dispatch) {
@@ -166,4 +192,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(ItemListContainer);
+)(withStyles(styles)(ItemListContainer));

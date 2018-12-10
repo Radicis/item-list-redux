@@ -4,13 +4,15 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { withStyles } from '@material-ui/core/styles';
 
+import _ from 'lodash';
+
 import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
 import AddIcon from '@material-ui/icons/Add';
 import SettingsIcon from '@material-ui/icons/Settings';
 import Fab from '@material-ui/core/Fab';
 
 import * as itemActions from '../actions/items';
+import * as optionsActions from '../actions/options';
 
 import ItemListContainer from './ItemList';
 import ItemDisplayContainer from './ItemDisplay';
@@ -19,39 +21,32 @@ import CreateNewItem from '../dialogs/CreateItem';
 
 type Props = {
   createNewItem: () => void,
-  classes: {}
+  updateOptions: () => void,
+  classes: object
 };
 
 const styles = theme => ({
   mainContainer: {
-    height: '100%' // allow for draggale header
-  },
-  title: {
-    padding: '5px 10px',
-    fontFamily: 'Roboto, sans-serif',
-    background: '#424242',
-    color: '#ccc',
-    WebkitAppRegion: 'drag'
-  },
-  paper: {
+    width: '100%',
     height: '100%',
-    overflow: 'hidden',
-    borderRadius: 0
+    background: '#424242',
+    paddingTop: theme.spacing.unit * 2,
+    overflow: 'hidden'
   },
-  grid: {
+  fullHeight: {
     height: '100%',
     overflow: 'hidden'
   },
   fab: {
     position: 'absolute',
-    bottom: theme.spacing.unit * 2.5,
+    bottom: theme.spacing.unit * 3,
     right: theme.spacing.unit * 2
   },
   fabOptions: {
     position: 'absolute',
     width: '36px',
     height: '30px',
-    bottom: theme.spacing.unit * 10,
+    bottom: theme.spacing.unit * 10.5,
     right: theme.spacing.unit * 2
   }
 });
@@ -99,41 +94,46 @@ class MainPage extends Component<Props> {
     this.closeDialogs();
   };
 
+  setOptions = options => {
+    const { updateOptions } = this.props;
+    updateOptions(options);
+    this.closeDialogs();
+  };
+
   render() {
     const { classes } = this.props;
     const { dialogCreateNewOpen, dialogOptionsOpen } = this.state;
     return (
       <div className={classes.mainContainer}>
-        <div className={classes.title}>:The Thing Storerer: </div>
-        <Paper className={classes.paper}>
-          <Grid
-            container
-            spacing={24}
-            alignItems="stretch"
-            className={classes.grid}
-          >
-            <Grid item xs={4}>
-              <ItemListContainer />
-            </Grid>
-            <Grid item xs={8}>
-              <ItemDisplayContainer />
-            </Grid>
+        <Grid
+          container
+          spacing={24}
+          alignItems="stretch"
+          className={classes.fullHeight}
+        >
+
+          <Grid item xs={4}>
+            <ItemListContainer />
           </Grid>
-          <Fab
-            color="primary"
-            onClick={this.openOptionsDialog}
-            className={classes.fabOptions}
-          >
-            <SettingsIcon />
-          </Fab>
-          <Fab
-            color="primary"
-            onClick={this.openCreateNewDialog}
-            className={classes.fab}
-          >
-            <AddIcon />
-          </Fab>
-        </Paper>
+          <Grid item xs={8}>
+            <ItemDisplayContainer />
+          </Grid>
+        </Grid>
+
+        <Fab
+          color="primary"
+          onClick={this.openOptionsDialog}
+          className={classes.fabOptions}
+        >
+          <SettingsIcon />
+        </Fab>
+        <Fab
+          color="primary"
+          onClick={this.openCreateNewDialog}
+          className={classes.fab}
+        >
+          <AddIcon />
+        </Fab>
 
         <CreateNewItem
           open={dialogCreateNewOpen}
@@ -151,10 +151,15 @@ class MainPage extends Component<Props> {
   }
 }
 
-const mapStateToProps = state => ({}); // needs to be here although not used
+const mapStateToProps = state => ({
+  palette: state.options.palette
+});
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators(itemActions, dispatch);
+  return bindActionCreators(
+    _.assign({}, itemActions, optionsActions),
+    dispatch
+  );
 }
 
 export default connect(
