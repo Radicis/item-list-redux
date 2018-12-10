@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from 'react';
+import React from 'react';
 import AceEditor from 'react-ace';
 
 import 'brace/mode/mysql';
@@ -12,6 +12,8 @@ import 'brace/theme/github';
 type Props = {
   content: string,
   aceMode: string,
+  showLines: boolean,
+  aceTheme: string,
   updateContent: () => void
 };
 
@@ -32,7 +34,7 @@ const Editor = (props: Props) => {
       fontSize={12}
       showPrintMargin={false}
       showGutter={showLines || defaults.showLines}
-      height="440px"
+      height="100%"
       width="100%"
       highlightActiveLine
       value={content}

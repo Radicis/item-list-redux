@@ -1,6 +1,7 @@
 // @flow
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
+import { withStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import Grid from '@material-ui/core/Grid';
@@ -11,8 +12,16 @@ import ItemOptions from '../components/ItemOptions';
 
 type Props = {
   item: object,
-  updateItem: () => void
+  updateItem: () => void,
+  classes: object
 };
+
+const styles = () => ({
+  fullHeight: {
+    height: '100%',
+    paddingBottom: '45px !important' // gets overwritten
+  },
+});
 
 class ItemDisplayContainer extends Component<Props> {
   props: Props;
@@ -26,11 +35,11 @@ class ItemDisplayContainer extends Component<Props> {
     const { aceTheme } = this.state;
     if (!_.isEmpty(item)) {
       return (
-        <Grid container spacing={24} direction="column">
-          <Grid item>
+        <Grid container spacing={24} direction="row" alignItems="stretch" className={classes.fullHeight}>
+          <Grid item xs={12}>
             <ItemOptions item={item} updateItem={updateItem} />
           </Grid>
-          <Grid item>
+          <Grid item className={classes.fullHeight} xs={12}>
             <ItemContents
               item={item}
               aceTheme={aceTheme}
@@ -57,4 +66,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(ItemDisplayContainer);
+)(withStyles(styles)(ItemDisplayContainer));

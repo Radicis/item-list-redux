@@ -1,6 +1,5 @@
 // @flow
 import React, { Component } from 'react';
-import _ from 'lodash';
 import TextField from '@material-ui/core/TextField';
 import Select from '@material-ui/core/Select';
 import Grid from '@material-ui/core/Grid';
@@ -38,7 +37,7 @@ class ItemOptions extends Component<Props> {
 
   render() {
     const { modes } = this.state;
-    const { classes, item } = this.props;
+    const { item } = this.props;
     return (
       <Grid container spacing={24} justify="center" alignItems="center">
         <Grid item xs={7}>

@@ -1,7 +1,7 @@
 // @flow
 import Store from 'electron-store';
 import _ from 'lodash';
-import type { Dispatch, GetState } from '../reducers/types';
+import type { Dispatch } from '../reducers/types';
 
 export const SET_OPTIONS = 'SET_OPTIONS';
 
@@ -35,7 +35,7 @@ export function updateOptions(palette) {
   return (dispatch: Dispatch) => {
     const storeOptions = OptionsStore.get('palette') || {};
 
-    let updatedOptions = _.assign({}, storeOptions, palette);
+    const updatedOptions = _.assign({}, storeOptions, palette);
 
     // Update the store with the new array
     OptionsStore.set('palette', updatedOptions);

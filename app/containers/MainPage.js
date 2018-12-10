@@ -7,7 +7,6 @@ import { withStyles } from '@material-ui/core/styles';
 import _ from 'lodash';
 
 import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
 import AddIcon from '@material-ui/icons/Add';
 import SettingsIcon from '@material-ui/icons/Settings';
 import Fab from '@material-ui/core/Fab';
@@ -23,9 +22,7 @@ import CreateNewItem from '../dialogs/CreateItem';
 type Props = {
   createNewItem: () => void,
   updateOptions: () => void,
-  getOptionsFromStore: () => void,
-  classes: object,
-  paletter: object
+  classes: object
 };
 
 const styles = theme => ({
@@ -36,8 +33,9 @@ const styles = theme => ({
     paddingTop: theme.spacing.unit * 2,
     overflow: 'hidden'
   },
-  grid: {
-    height: '100%'
+  fullHeight: {
+    height: '100%',
+    overflow: 'hidden'
   },
   fab: {
     position: 'absolute',
@@ -111,8 +109,9 @@ class MainPage extends Component<Props> {
           container
           spacing={24}
           alignItems="stretch"
-          className={classes.grid}
+          className={classes.fullHeight}
         >
+
           <Grid item xs={4}>
             <ItemListContainer />
           </Grid>
@@ -120,6 +119,7 @@ class MainPage extends Component<Props> {
             <ItemDisplayContainer />
           </Grid>
         </Grid>
+
         <Fab
           color="primary"
           onClick={this.openOptionsDialog}

@@ -26,9 +26,9 @@ type Props = {
 
 class App extends Component<Props> {
   props: Props;
-  
+
   render() {
-    const { palette, children, classes } = this.props;
+    const { palette, children } = this.props;
     return (
       <MuiThemeProvider theme={_.assign({}, theme, palette)}>
         <AppHeader />

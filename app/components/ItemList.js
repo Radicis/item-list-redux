@@ -2,17 +2,11 @@
 import React, { Component } from 'react';
 import List from '@material-ui/core/List';
 import { withStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
-import _ from 'lodash';
 import ItemListItem from './ItemListItem';
-import ListFilter from './ListFilter';
 
 const styles = () => ({
   list: {
-    height: 430,
-    overflowY: 'auto',
-    overflowX: 'hidden',
-    marginRight: -20
+
   }
 });
 
@@ -20,7 +14,8 @@ type Props = {
   items: array,
   selectItem: () => void,
   removeItem: () => void,
-  classes: {}
+  classes: object,
+  selectedItemId: string
 };
 
 class ItemList extends Component<Props> {

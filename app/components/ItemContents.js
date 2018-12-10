@@ -1,6 +1,5 @@
 // @flow
 import React, { Component } from 'react';
-import _ from 'lodash';
 import Editor from './Editor';
 
 type Props = {
@@ -10,12 +9,6 @@ type Props = {
 
 class ItemContents extends Component<Props> {
   props: Props;
-
-  state = {
-    content: '',
-    aceTheme: 'monokai',
-    aceMode: 'text'
-  };
 
   /**
    * Dispatch the item update action to update the item int he store and state
@@ -28,8 +21,7 @@ class ItemContents extends Component<Props> {
   };
 
   render() {
-    const { classes, item, aceTheme } = this.props;
-    const { content } = this.state;
+    const { item } = this.props;
     return (
       <Editor
         content={item.content}

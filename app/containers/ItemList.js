@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import List from '@material-ui/core/List';
+import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import _ from 'lodash';
 import * as itemActions from '../actions/items';
@@ -11,12 +11,25 @@ import DeleteConfirm from '../dialogs/DeleteConfirm';
 import ListFilter from '../components/ListFilter';
 import ItemList from '../components/ItemList';
 
+const styles = () => ({
+  fullHeight: {
+    height: '100%'
+  },
+  overflowScroll: {
+    height: '100%',
+    overflowY: 'auto',
+    overflowX: 'hidden',
+    paddingBottom: '100px !important' // gets overwritten
+  }
+});
+
 type Props = {
   items: array,
   selectedItemId: string,
   selectItem: () => void,
   getItemsFromStore: () => void,
-  removeItem: () => void
+  removeItem: () => void,
+  classes: object
 };
 
 class ItemListContainer extends Component<Props> {
@@ -27,7 +40,6 @@ class ItemListContainer extends Component<Props> {
     dialogOpen: false,
     itemId: null,
     types: [],
-    isFiltered: false,
     filterType: 'all'
   };
 
@@ -84,9 +96,9 @@ class ItemListContainer extends Component<Props> {
   filterItems = event => {
     const { items } = this.props;
     const { filterType } = this.state;
-    let filterEvent = event.target.value;
+    const filterEvent = event.target.value;
 
-    let filteredItems = _.filter(
+    const filteredItems = _.filter(
       items,
       i => filterType === 'all' || i.type === filterType
     );
@@ -138,8 +150,8 @@ class ItemListContainer extends Component<Props> {
     const { selectItem, classes, selectedItemId, items } = this.props;
     const { filterItems, dialogOpen, itemId, types, filterType } = this.state;
     return (
-      <Grid container direction="column" spacing={16}>
-        <Grid item>
+      <Grid container direction="row" alignItems="stretch" spacing={16} className={classes.fullHeight}>
+        <Grid item xs={12}>
           <ListFilter
             types={types}
             filterType={filterType}
@@ -149,7 +161,7 @@ class ItemListContainer extends Component<Props> {
             filterItems={this.filterItems}
           />
         </Grid>
-        <Grid item>
+        <Grid item className={classes.overflowScroll} xs={12}>
           <ItemList
             items={filterItems}
             selectedItemId={selectedItemId}
@@ -180,4 +192,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(ItemListContainer);
+)(withStyles(styles)(ItemListContainer));

@@ -8,13 +8,12 @@ import Button from '@material-ui/core/Button';
 import CancelIcon from '@material-ui/icons/Cancel';
 
 type Props = {
-  items: array,
+  filterItems: array,
   filterItemsByType: () => void,
   resetFilters: () => void,
   types: array,
   isFiltered: boolean,
-  filterType: string,
-  classes: object
+  filterType: string
 };
 
 class ListFilter extends Component<Props> {
@@ -22,7 +21,6 @@ class ListFilter extends Component<Props> {
 
   render() {
     const {
-      classes,
       filterItems,
       filterItemsByType,
       types,
