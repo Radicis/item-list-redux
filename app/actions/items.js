@@ -124,6 +124,7 @@ export function selectItem(item) {
 export function createNewItem(itemName) {
   return (dispatch: Dispatch) => {
     const newItem = Object.assign({}, { title: itemName });
+    newItem.type = 'text';
     newItem.id = UUID();
     newItem.content = 'Here be things';
     const storeItems = ItemStore.get('items') || [];

@@ -5,6 +5,12 @@ import AceEditor from 'react-ace';
 import 'brace/mode/mysql';
 import 'brace/mode/javascript';
 import 'brace/mode/java';
+import 'brace/mode/css';
+import 'brace/mode/html';
+import 'brace/mode/json';
+import 'brace/mode/kotlin';
+import 'brace/mode/yaml';
+import 'brace/mode/sh';
 
 import 'brace/theme/monokai';
 import 'brace/theme/github';

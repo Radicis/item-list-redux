@@ -14,7 +14,7 @@ class ItemOptions extends Component<Props> {
   props: Props;
 
   state = {
-    modes: ['javascript', 'mysql', 'java', 'text']
+    modes: ['javascript', 'mysql', 'java', 'text', 'css', 'html', 'json', 'kotlin', 'yaml', 'sh']
   };
 
   /**
