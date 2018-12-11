@@ -4,7 +4,8 @@ import Editor from './Editor';
 
 type Props = {
   item: object,
-  updateItem: () => void
+  updateItem: () => void,
+  aceTheme: string
 };
 
 class ItemContents extends Component<Props> {
@@ -21,11 +22,12 @@ class ItemContents extends Component<Props> {
   };
 
   render() {
-    const { item } = this.props;
+    const { item, aceTheme } = this.props;
     return (
       <Editor
         content={item.content}
         aceMode={item.type}
+        aceTheme={aceTheme}
         updateContent={this.updateContent}
       />
     );

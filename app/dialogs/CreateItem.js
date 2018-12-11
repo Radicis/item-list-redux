@@ -36,11 +36,11 @@ class CreateNewItem extends Component<Props> {
     handleOk(newItemName);
     this.setState({
       newItemName: ''
-    });   
-  }
+    });
+  };
 
   render() {
-    const { open, handleClose, handleOk } = this.props;
+    const { open, handleClose } = this.props;
     const { newItemName } = this.state;
     return (
       <Dialog
@@ -61,13 +61,13 @@ class CreateNewItem extends Component<Props> {
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="primary">
+          <Button onClick={handleClose} color="secondary">
             Cancel
           </Button>
           <Button
             disabled={!newItemName}
             onClick={this.handleOk}
-            color="primary"
+            color="secondary"
           >
             Ok
           </Button>

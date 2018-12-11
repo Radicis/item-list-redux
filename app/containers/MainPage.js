@@ -10,6 +10,7 @@ import Grid from '@material-ui/core/Grid';
 import AddIcon from '@material-ui/icons/Add';
 import SettingsIcon from '@material-ui/icons/Settings';
 import Fab from '@material-ui/core/Fab';
+import Paper from '@material-ui/core/Paper';
 
 import * as itemActions from '../actions/items';
 import * as optionsActions from '../actions/options';
@@ -22,6 +23,7 @@ import CreateNewItem from '../dialogs/CreateItem';
 type Props = {
   createNewItem: () => void,
   updateOptions: () => void,
+  lightTheme: boolean,
   classes: object
 };
 
@@ -29,9 +31,9 @@ const styles = theme => ({
   mainContainer: {
     width: '100%',
     height: '100%',
-    background: '#424242',
     paddingTop: theme.spacing.unit * 2,
-    overflow: 'hidden'
+    overflow: 'hidden',
+    borderRadius: 0
   },
   fullHeight: {
     height: '100%',
@@ -94,6 +96,10 @@ class MainPage extends Component<Props> {
     this.closeDialogs();
   };
 
+  /**
+   * Updates the options
+   * @param options
+   */
   setOptions = options => {
     const { updateOptions } = this.props;
     updateOptions(options);
@@ -101,10 +107,10 @@ class MainPage extends Component<Props> {
   };
 
   render() {
-    const { classes } = this.props;
+    const { classes, lightTheme } = this.props;
     const { dialogCreateNewOpen, dialogOptionsOpen } = this.state;
     return (
-      <div className={classes.mainContainer}>
+      <Paper className={classes.mainContainer}>
         <Grid
           container
           spacing={24}
@@ -121,7 +127,7 @@ class MainPage extends Component<Props> {
         </Grid>
 
         <Fab
-          color="primary"
+          color="secondary"
           onClick={this.openOptionsDialog}
           className={classes.fabOptions}
         >
@@ -142,17 +148,18 @@ class MainPage extends Component<Props> {
         />
 
         <SetOptions
+          lightTheme={lightTheme}
           open={dialogOptionsOpen}
           handleOk={this.setOptions}
           handleClose={this.closeDialogs}
         />
-      </div>
+      </Paper>
     );
   }
 }
 
 const mapStateToProps = state => ({
-  palette: state.options.palette
+  lightTheme: state.options.lightTheme
 });
 
 function mapDispatchToProps(dispatch) {

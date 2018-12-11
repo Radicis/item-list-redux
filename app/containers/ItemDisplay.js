@@ -13,7 +13,8 @@ import ItemOptions from '../components/ItemOptions';
 type Props = {
   item: object,
   updateItem: () => void,
-  classes: object
+  classes: object,
+  lightTheme: boolean
 };
 
 const styles = () => ({
@@ -27,12 +28,13 @@ class ItemDisplayContainer extends Component<Props> {
   props: Props;
 
   state = {
-    aceTheme: 'monokai'
+    aceDarkTheme: 'monokai',
+    aceLightTheme: 'github'
   };
 
   render() {
-    const { classes, item, updateItem } = this.props;
-    const { aceTheme } = this.state;
+    const { classes, item, updateItem, lightTheme } = this.props;
+    const { aceDarkTheme, aceLightTheme } = this.state;
     if (!_.isEmpty(item)) {
       return (
         <Grid container spacing={24} direction="row" alignItems="stretch" className={classes.fullHeight}>
@@ -42,7 +44,7 @@ class ItemDisplayContainer extends Component<Props> {
           <Grid item className={classes.fullHeight} xs={12}>
             <ItemContents
               item={item}
-              aceTheme={aceTheme}
+              aceTheme={lightTheme ? aceLightTheme : aceDarkTheme}
               updateItem={updateItem}
             />
           </Grid>
@@ -55,7 +57,8 @@ class ItemDisplayContainer extends Component<Props> {
 
 const mapStateToProps = state => {
   return {
-    item: state.items.item
+    item: state.items.item,
+    lightTheme: state.options.lightTheme
   };
 };
 

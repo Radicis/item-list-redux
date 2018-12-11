@@ -1,6 +1,5 @@
 // @flow
 import Store from 'electron-store';
-import _ from 'lodash';
 import type { Dispatch } from '../reducers/types';
 
 export const SET_OPTIONS = 'SET_OPTIONS';
@@ -13,34 +12,28 @@ const OptionsStore = new Store();
  */
 export function getOptionsFromStore() {
   return (dispatch: Dispatch) => {
-    console.log('Getting options');
-    const storeOptions = OptionsStore.get('palette') || {};
-    console.log(storeOptions);
+    const storeOptions = OptionsStore.get('lightTheme') || false;
     dispatch(setOptions(storeOptions));
   };
 }
 /**
  * Sets the state options {}
- * @param items
- * @returns {{type: string, items: *}}
+ * @param lightTheme
+ * @returns {{type: boolean, items: *}}
  */
-export function setOptions(palette) {
+export function setOptions(lightTheme) {
   return {
     type: SET_OPTIONS,
-    palette
+    lightTheme
   };
 }
 
-export function updateOptions(palette) {
+export function updateOptions(lightTheme) {
   return (dispatch: Dispatch) => {
-    const storeOptions = OptionsStore.get('palette') || {};
-
-    const updatedOptions = _.assign({}, storeOptions, palette);
-
     // Update the store with the new array
-    OptionsStore.set('palette', updatedOptions);
+    OptionsStore.set('lightTheme', lightTheme);
 
     // Update the item in the state
-    dispatch(setOptions(updatedOptions));
+    dispatch(setOptions(lightTheme));
   };
 }

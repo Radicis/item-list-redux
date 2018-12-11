@@ -2,7 +2,6 @@
 import React, { Component } from 'react';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Dialog from '@material-ui/core/Dialog';
-import TextField from '@material-ui/core/TextField';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 import Button from '@material-ui/core/Button';
@@ -21,12 +20,20 @@ class SetOptions extends Component<Props> {
   props: Props;
 
   state = {
-    lightTheme: false
+    localLightTheme: false
   };
+
+  componentWillMount () {
+    const { lightTheme } = this.props;
+    this.setState({
+      localLightTheme: lightTheme
+    })
+  }
 
   /**
    * Updates the state when the text input changes
-   * @param event
+   * @param name
+   * @returns {Function}
    */
   handleChange = name => event => {
     this.setState({
@@ -36,7 +43,7 @@ class SetOptions extends Component<Props> {
 
   render() {
     const { open, handleClose, handleOk } = this.props;
-    const { lightTheme } = this.state;
+    const { localLightTheme } = this.state;
     return (
       <Dialog
         open={open}
@@ -49,8 +56,8 @@ class SetOptions extends Component<Props> {
             <FormControlLabel
               control={
                 <Switch
-                  checked={lightTheme}
-                  onChange={this.handleChange('lightTheme')}
+                  checked={localLightTheme}
+                  onChange={this.handleChange('localLightTheme')}
                   value="light"
                 />
               }
@@ -59,10 +66,10 @@ class SetOptions extends Component<Props> {
           </FormGroup>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="primary">
+          <Button onClick={handleClose} color="secondary">
             Cancel
           </Button>
-          <Button onClick={() => handleOk({ type: lightTheme ? 'light' : 'dark' })} color="primary">
+          <Button onClick={() => handleOk(localLightTheme)} color="secondary">
             Ok
           </Button>
         </DialogActions>

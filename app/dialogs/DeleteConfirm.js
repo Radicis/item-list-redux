@@ -22,10 +22,10 @@ const DeleteConfirm = (props: Props) => {
     >
       <DialogTitle id="form-dialog-title">Really Delete?</DialogTitle>
       <DialogActions>
-        <Button onClick={handleClose} color="primary">
+        <Button onClick={handleClose} color="secondary">
           Cancel
         </Button>
-        <Button onClick={() => handleOk(itemId)} color="primary">
+        <Button onClick={() => handleOk(itemId)} color="secondary">
           Ok
         </Button>
       </DialogActions>
