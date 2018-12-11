@@ -25,7 +25,7 @@ const styles = () => ({
 
 type Props = {
   items: array,
-  selectedItemId: string,
+  item: object,
   selectItem: () => void,
   getItemsFromStore: () => void,
   removeItem: () => void,
@@ -147,13 +147,13 @@ class ItemListContainer extends Component<Props> {
   };
 
   render() {
-    const { selectItem, classes, selectedItemId, items } = this.props;
+    const { selectItem, classes, item, items } = this.props;
     const { filterItems, dialogOpen, itemId, types, filterType } = this.state;
     return (
       <Grid container direction="row" alignItems="stretch" spacing={16} className={classes.fullHeight}>
         <Grid item xs={12}>
           <ListFilter
-            types={types}
+            types={_.uniq(types)}
             filterType={filterType}
             filterItemsByType={this.filterItemsByType}
             isFiltered={filterItems.length !== items.length}
@@ -164,7 +164,7 @@ class ItemListContainer extends Component<Props> {
         <Grid item className={classes.overflowScroll} xs={12}>
           <ItemList
             items={filterItems}
-            selectedItemId={selectedItemId}
+            selectedItemId={item ? item.id : 0}
             selectItem={selectItem}
             removeItem={this.openDeleteDialog}
           />
@@ -182,7 +182,7 @@ class ItemListContainer extends Component<Props> {
 
 const mapStateToProps = state => ({
   items: state.items.items,
-  selectedItemId: state.items.item.id
+  item: state.items.item
 });
 
 function mapDispatchToProps(dispatch) {

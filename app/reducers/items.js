@@ -18,7 +18,7 @@ export default function(state = initialState, action: Action) {
     case SELECT_ITEM:
       return {
         ...state,
-        item: action.item
+        item: action.item || null
       };
     case UPDATE_ITEM:
       return {
