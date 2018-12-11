@@ -134,7 +134,7 @@ class MainPage extends Component<Props> {
           <SettingsIcon />
         </Fab>
         <Fab
-          color="primary"
+          color="secondary"
           onClick={this.openCreateNewDialog}
           className={classes.fab}
         >

@@ -16,17 +16,17 @@ type Props = {
 };
 
 const primary = {
-  light: '#ffffff',
-  main: '#e3f2fd',
-  dark: '#b1bfca',
-  contrastText: '#000000'
+  light: '#03A9F4',
+  main: '#607D8B',
+  dark: '#455A64',
+  contrastText: '#212121'
 };
 
 const secondary = {
-  light: '#e6ffff',
-  main: '#b3e5fc',
-  dark: '#8b2b3c9',
-  contrastText: '#000000'
+  light: '#89e9ff',
+  main: '#03A9F4',
+  dark: '#026a99',
+  contrastText: '#fff'
 };
 
 class App extends Component<Props> {
