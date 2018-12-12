@@ -23,6 +23,7 @@ import CreateNewItem from '../dialogs/CreateItem';
 type Props = {
   createNewItem: () => void,
   updateOptions: () => void,
+  showExport: () => void,
   lightTheme: boolean,
   classes: object
 };
@@ -107,7 +108,7 @@ class MainPage extends Component<Props> {
   };
 
   render() {
-    const { classes, lightTheme } = this.props;
+    const { classes, lightTheme, showExport } = this.props;
     const { dialogCreateNewOpen, dialogOptionsOpen } = this.state;
     return (
       <Paper className={classes.mainContainer}>
@@ -152,6 +153,7 @@ class MainPage extends Component<Props> {
           open={dialogOptionsOpen}
           handleOk={this.setOptions}
           handleClose={this.closeDialogs}
+          handleExport={showExport}
         />
       </Paper>
     );

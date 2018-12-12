@@ -1,19 +1,38 @@
 // @flow
 import React, { Component } from 'react';
+import { withStyles } from '@material-ui/core/styles';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 import Button from '@material-ui/core/Button';
+import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import Switch from '@material-ui/core/Switch';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+
+const styles = theme => ({
+  button: {
+    margin: theme.spacing.unit,
+  },
+  leftIcon: {
+    marginRight: theme.spacing.unit,
+  },
+  rightIcon: {
+    marginLeft: theme.spacing.unit,
+  },
+  iconSmall: {
+    fontSize: 20,
+  },
+});
 
 type Props = {
   open: boolean,
   lightTheme: boolean,
   handleClose: () => void,
-  handleOk: () => void
+  handleOk: () => void,
+  handleExport: () => void,
+  classes: object
 };
 
 class SetOptions extends Component<Props> {
@@ -42,7 +61,7 @@ class SetOptions extends Component<Props> {
   };
 
   render() {
-    const { open, handleClose, handleOk } = this.props;
+    const { classes, open, handleClose, handleOk, handleExport } = this.props;
     const { localLightTheme } = this.state;
     return (
       <Dialog
@@ -64,6 +83,11 @@ class SetOptions extends Component<Props> {
               label="Vlad Mode"
             />
           </FormGroup>
+
+          <Button className={classes.button} size="small" variant="contained" color="secondary" onClick={handleExport}>
+            <CloudUploadIcon className={classes.leftIcon} />
+            Export
+          </Button>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="secondary">
@@ -78,4 +102,4 @@ class SetOptions extends Component<Props> {
   }
 }
 
-export default SetOptions;
+export default withStyles(styles)(SetOptions);

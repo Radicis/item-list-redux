@@ -2,9 +2,11 @@
 import Store from 'electron-store';
 import type { Dispatch } from '../reducers/types';
 
+import { selectItem } from './items';
+
 export const SET_OPTIONS = 'SET_OPTIONS';
 
-const OptionsStore = new Store();
+const JSONStore = new Store();
 
 /**
  * Gets the items from the json store and sets the state
@@ -12,7 +14,7 @@ const OptionsStore = new Store();
  */
 export function getOptionsFromStore() {
   return (dispatch: Dispatch) => {
-    const storeOptions = OptionsStore.get('lightTheme') || false;
+    const storeOptions = JSONStore.get('lightTheme') || false;
     dispatch(setOptions(storeOptions));
   };
 }
@@ -31,9 +33,20 @@ export function setOptions(lightTheme) {
 export function updateOptions(lightTheme) {
   return (dispatch: Dispatch) => {
     // Update the store with the new array
-    OptionsStore.set('lightTheme', lightTheme);
+    JSONStore.set('lightTheme', lightTheme);
 
     // Update the item in the state
     dispatch(setOptions(lightTheme));
   };
+}
+
+export function showExport() {
+  return (dispatch: Dispatch) => {
+    const storeItems = JSONStore.get('items');
+    dispatch(selectItem({
+      title: 'EXPORT',
+      content: JSON.stringify(storeItems),
+      type: 'json'
+    }));
+  }
 }

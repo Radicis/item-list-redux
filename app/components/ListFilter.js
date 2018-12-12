@@ -53,8 +53,8 @@ class ListFilter extends Component<Props> {
           </Select>
         </Grid>
         <Grid item xs={2}>
-          <Button disabled={!isFiltered} onClick={resetFilters}>
-            <CancelIcon />
+          <Button disabled={!isFiltered} onClick={resetFilters} size="small">
+            <CancelIcon color="primary" />
           </Button>
         </Grid>
       </Grid>

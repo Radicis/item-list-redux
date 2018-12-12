@@ -5,6 +5,7 @@ import { withStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import Grid from '@material-ui/core/Grid';
+
 import * as itemActions from '../actions/items';
 
 import ItemContents from '../components/ItemContents';

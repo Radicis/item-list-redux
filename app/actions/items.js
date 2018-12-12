@@ -8,7 +8,7 @@ export const SELECT_ITEM = 'SELECT_ITEM';
 export const SET_ITEMS = 'SET_ITEMS';
 export const UPDATE_ITEM = 'UPDATE_ITEM';
 
-const ItemStore = new Store();
+const JSONStore = new Store();
 
 /**
  * Gets the items from the json store and sets the state
@@ -16,7 +16,7 @@ const ItemStore = new Store();
  */
 export function getItemsFromStore(itemId) {
   return (dispatch: Dispatch) => {
-    const storeItems = ItemStore.get('items') || [];
+    const storeItems = JSONStore.get('items') || [];
     dispatch(setItems(storeItems));
     if (itemId) {
       dispatch(selectItem(itemId));
@@ -30,7 +30,7 @@ export function getItemsFromStore(itemId) {
  */
 export function purgeStore() {
   return (dispatch: Dispatch) => {
-    ItemStore.delete('items');
+    JSONStore.delete('items');
     dispatch(getItemsFromStore());
   };
 }
@@ -44,10 +44,10 @@ export function removeItem(itemId) {
   console.log(itemId);
   return (dispatch: Dispatch, getState: GetState) => {
     // find the item by id
-    const storeItems = ItemStore.get('items') || [];
+    const storeItems = JSONStore.get('items') || [];
     const item = _.find(storeItems, i => i.id === itemId);
     _.pull(storeItems, item);
-    ItemStore.set('items', storeItems);
+    JSONStore.set('items', storeItems);
     // Check if item was selected and deselect if it was
     const selectedItem = getState().items.item;
     if (selectedItem && itemId === selectedItem.id) {
@@ -65,13 +65,13 @@ export function removeItem(itemId) {
  */
 export function updateItem(itemId, updatedItem) {
   return (dispatch: Dispatch) => {
-    const storeItems = ItemStore.get('items') || [];
+    const storeItems = JSONStore.get('items') || [];
 
     // Update the item in the store
     _.map(storeItems, i => (i.id === itemId ? _.assign(i, updatedItem) : i));
 
     // Update the store with the new array
-    ItemStore.set('items', storeItems);
+    JSONStore.set('items', storeItems);
 
     // Update the item in the state
     dispatch(updateStateItem(itemId, updatedItem));
@@ -127,9 +127,9 @@ export function createNewItem(itemName) {
     newItem.type = 'text';
     newItem.id = UUID();
     newItem.content = 'Here be things';
-    const storeItems = ItemStore.get('items') || [];
+    const storeItems = JSONStore.get('items') || [];
     storeItems.push(newItem);
-    ItemStore.set('items', storeItems);
+    JSONStore.set('items', storeItems);
     dispatch(getItemsFromStore());
   };
 }
