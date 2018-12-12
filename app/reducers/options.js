@@ -1,9 +1,10 @@
 // @flow
-import { SET_OPTIONS } from '../actions/options';
+import { SET_OPTIONS, TOGGLE_MENU } from '../actions/options';
 import type { Action } from './types';
 
 const initialState = {
-  lightTheme: false
+  lightTheme: false,
+  menuCollapsed: false
 };
 
 export default function(state = initialState, action: Action) {
@@ -13,6 +14,12 @@ export default function(state = initialState, action: Action) {
         ...state,
         lightTheme: action.lightTheme
       };
+    case TOGGLE_MENU: {
+      return {
+        ...state,
+        menuCollapsed: !state.menuCollapsed
+      }
+    }
     default:
       return state;
   }

@@ -5,6 +5,7 @@ import type { Dispatch } from '../reducers/types';
 import { selectItem } from './items';
 
 export const SET_OPTIONS = 'SET_OPTIONS';
+export const TOGGLE_MENU = 'TOGGLE_MENU';
 
 const JSONStore = new Store();
 
@@ -49,4 +50,10 @@ export function showExport() {
       type: 'json'
     }));
   }
+}
+
+export function toggleMenuCollapse() {
+  return {
+    type: TOGGLE_MENU
+  };
 }

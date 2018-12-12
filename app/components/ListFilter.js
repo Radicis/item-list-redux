@@ -13,7 +13,8 @@ type Props = {
   resetFilters: () => void,
   types: array,
   isFiltered: boolean,
-  filterType: string
+  filterType: string,
+  menuCollapsed: boolean
 };
 
 class ListFilter extends Component<Props> {
@@ -26,38 +27,47 @@ class ListFilter extends Component<Props> {
       types,
       filterType,
       isFiltered,
-      resetFilters
+      resetFilters,
+      menuCollapsed
     } = this.props;
     return (
-      <Grid container direction="row" justify="center" alignItems="center" spacing={16}>
-        <Grid item xs={6}>
-          <TextField
-            autoFocus
-            placeholder="Search.."
-            onChange={filterItems}
-            fullWidth
-          />
-        </Grid>
-        <Grid item xs={3}>
-          <Select
-            value={filterType || 'all'}
-            fullWidth
-            onChange={filterItemsByType}
-          >
-            <MenuItem value="all">All</MenuItem>
-            {types.map(type => (
-              <MenuItem key={type} value={type}>
-                {type}
-              </MenuItem>
-            ))}
-          </Select>
-        </Grid>
-        <Grid item xs={2}>
-          <Button disabled={!isFiltered} onClick={resetFilters} size="small">
-            <CancelIcon color="primary" />
-          </Button>
-        </Grid>
-      </Grid>
+      <div>
+      {(menuCollapsed) ?
+        (<div />)
+
+          :
+
+          (<Grid container direction="row" justify="center" alignItems="center" spacing={16}>
+          <Grid item xs={6}>
+            <TextField
+              autoFocus
+              placeholder="Search.."
+              onChange={filterItems}
+              fullWidth
+            />
+          </Grid>
+          <Grid item xs={3}>
+            <Select
+              value={filterType || 'all'}
+              fullWidth
+              onChange={filterItemsByType}
+            >
+              <MenuItem value="all">All</MenuItem>
+              {types.map(type => (
+                <MenuItem key={type} value={type}>
+                  {type}
+                </MenuItem>
+              ))}
+            </Select>
+          </Grid>
+          <Grid item xs={2}>
+            <Button disabled={!isFiltered} onClick={resetFilters} size="small">
+              <CancelIcon color="default" />
+            </Button>
+          </Grid>
+        </Grid>)
+      }
+      </div>
     );
   }
 }

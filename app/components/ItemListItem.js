@@ -17,28 +17,26 @@ type Props = {
 };
 
 const ItemListItem = (props: Props) => {
-  const { item, selectItem, removeItem, selected } = props;
+  const {item, selectItem, removeItem, selected} = props;
   return (
-    <div>
-      <ListItem button selected={selected} onClick={() => selectItem(item)}>
-        <Avatar>
-          {!item.type || item.type === 'text' ? (
-            <TextFieldsIcon />
-          ) : (
-            <CodeIcon />
-          )}
-        </Avatar>
-        <ListItemText
-          primary={item.title}
-          secondary={!item.type || item.type === 'text' ? '' : item.type}
-        />
-        <ListItemSecondaryAction>
-          <IconButton aria-label="Delete" onClick={() => removeItem(item.id)}>
-            <DeleteForeverOutlinedIcon style={{ fontSize: 20 }} />
-          </IconButton>
-        </ListItemSecondaryAction>
-      </ListItem>
-    </div>
+    <ListItem button selected={selected} onClick={() => selectItem(item)}>
+      <Avatar>
+        {!item.type || item.type === 'text' ? (
+          <TextFieldsIcon/>
+        ) : (
+          <CodeIcon/>
+        )}
+      </Avatar>
+      <ListItemText
+        primary={item.title}
+        secondary={!item.type || item.type === 'text' ? '' : item.type}
+      />
+      <ListItemSecondaryAction>
+        <IconButton aria-label="Delete" onClick={() => removeItem(item.id)}>
+          <DeleteForeverOutlinedIcon style={{fontSize: 20}}/>
+        </IconButton>
+      </ListItemSecondaryAction>
+    </ListItem>
   );
 };
 

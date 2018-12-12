@@ -47,6 +47,8 @@ const Editor = (props: Props) => {
       onChange={updateContent}
       setOptions={{
         showLineNumbers: true,
+        enableLiveAutocompletion: true,
+        enableBasicAutocompletion: true,
         tabSize: 2
       }}
     />

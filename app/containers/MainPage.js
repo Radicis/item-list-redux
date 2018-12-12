@@ -1,31 +1,17 @@
 // @flow
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { withStyles } from '@material-ui/core/styles';
-
-import _ from 'lodash';
+import React, {Component} from 'react';
+import {withStyles} from '@material-ui/core/styles';
+import connect from "react-redux/es/connect/connect";
 
 import Grid from '@material-ui/core/Grid';
-import AddIcon from '@material-ui/icons/Add';
-import SettingsIcon from '@material-ui/icons/Settings';
-import Fab from '@material-ui/core/Fab';
 import Paper from '@material-ui/core/Paper';
-
-import * as itemActions from '../actions/items';
-import * as optionsActions from '../actions/options';
 
 import ItemListContainer from './ItemList';
 import ItemDisplayContainer from './ItemDisplay';
-import SetOptions from '../dialogs/SetOptions';
-import CreateNewItem from '../dialogs/CreateItem';
 
 type Props = {
-  createNewItem: () => void,
-  updateOptions: () => void,
-  showExport: () => void,
-  lightTheme: boolean,
-  classes: object
+  classes: object,
+  menuCollapsed: boolean
 };
 
 const styles = theme => ({
@@ -39,139 +25,53 @@ const styles = theme => ({
   fullHeight: {
     height: '100%',
     overflow: 'hidden'
-  },
-  fab: {
-    position: 'absolute',
-    bottom: theme.spacing.unit * 3,
-    right: theme.spacing.unit * 2
-  },
-  fabOptions: {
-    position: 'absolute',
-    width: '36px',
-    height: '30px',
-    bottom: theme.spacing.unit * 10.5,
-    right: theme.spacing.unit * 2
   }
 });
 
 class MainPage extends Component<Props> {
-  props: Props;
-
-  state = {
-    dialogCreateNewOpen: false,
-    dialogOptionsOpen: false
-  };
-
-  /**
-   * Opens the create new dialog
-   */
-  openCreateNewDialog = () => {
-    this.setState({
-      dialogCreateNewOpen: true
-    });
-  };
-
-  openOptionsDialog = () => {
-    this.setState({
-      dialogOptionsOpen: true
-    });
-  };
-
-  /**
-   * Closes the dialog
-   */
-  closeDialogs = () => {
-    this.setState({
-      dialogCreateNewOpen: false,
-      dialogOptionsOpen: false
-    });
-  };
-
-  /**
-   * Creates a new item in the store/state
-   * @param itemName - string name
-   */
-  createNewItem = itemName => {
-    const { createNewItem } = this.props;
-    createNewItem(itemName);
-    this.closeDialogs();
-  };
-
-  /**
-   * Updates the options
-   * @param options
-   */
-  setOptions = options => {
-    const { updateOptions } = this.props;
-    updateOptions(options);
-    this.closeDialogs();
-  };
-
   render() {
-    const { classes, lightTheme, showExport } = this.props;
-    const { dialogCreateNewOpen, dialogOptionsOpen } = this.state;
+    const {classes, menuCollapsed} = this.props;
     return (
       <Paper className={classes.mainContainer}>
-        <Grid
-          container
-          spacing={24}
-          alignItems="stretch"
-          className={classes.fullHeight}
-        >
 
-          <Grid item xs={4}>
-            <ItemListContainer />
-          </Grid>
-          <Grid item xs={8}>
-            <ItemDisplayContainer />
-          </Grid>
-        </Grid>
+        {(menuCollapsed)
+          ?
 
-        <Fab
-          color="secondary"
-          onClick={this.openOptionsDialog}
-          className={classes.fabOptions}
-        >
-          <SettingsIcon />
-        </Fab>
-        <Fab
-          color="secondary"
-          onClick={this.openCreateNewDialog}
-          className={classes.fab}
-        >
-          <AddIcon />
-        </Fab>
+          (
+            <Grid
+              container
+              spacing={24}
+              alignItems="stretch"
+              className={classes.fullHeight}
+            ><Grid item xs={12}><ItemDisplayContainer/></Grid></Grid>
+          )
 
-        <CreateNewItem
-          open={dialogCreateNewOpen}
-          handleOk={this.createNewItem}
-          handleClose={this.closeDialogs}
-        />
+          :
 
-        <SetOptions
-          lightTheme={lightTheme}
-          open={dialogOptionsOpen}
-          handleOk={this.setOptions}
-          handleClose={this.closeDialogs}
-          handleExport={showExport}
-        />
-      </Paper>
-    );
+          (<Grid
+              container
+              spacing={24}
+              alignItems="stretch"
+              className={classes.fullHeight}
+            >
+              <Grid item xs={4}>
+                <ItemListContainer/>
+              </Grid>
+
+              <Grid item xs={8}>
+                <ItemDisplayContainer/>
+              </Grid>
+            </Grid>
+
+          )}
+      </Paper>);
   }
-}
+};
 
 const mapStateToProps = state => ({
-  lightTheme: state.options.lightTheme
+  menuCollapsed: state.options.menuCollapsed
 });
 
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators(
-    _.assign({}, itemActions, optionsActions),
-    dispatch
-  );
-}
-
 export default connect(
-  mapStateToProps,
-  mapDispatchToProps
+  mapStateToProps
 )(withStyles(styles)(MainPage));

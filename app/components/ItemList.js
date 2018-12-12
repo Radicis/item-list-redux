@@ -1,13 +1,11 @@
 // @flow
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import List from '@material-ui/core/List';
-import { withStyles } from '@material-ui/core/styles';
+import {withStyles} from '@material-ui/core/styles';
 import ItemListItem from './ItemListItem';
 
 const styles = () => ({
-  list: {
-
-  }
+  list: {}
 });
 
 type Props = {
