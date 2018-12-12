@@ -1,5 +1,5 @@
 // @flow
-import React, {Component} from 'react';
+import React from 'react';
 import List from '@material-ui/core/List';
 import {withStyles} from '@material-ui/core/styles';
 import ItemListItem from './ItemListItem';
@@ -16,31 +16,27 @@ type Props = {
   selectedItemId: string
 };
 
-class ItemList extends Component<Props> {
-  props: Props;
-
-  render() {
-    const {
-      selectItem,
-      classes,
-      removeItem,
-      items,
-      selectedItemId
-    } = this.props;
-    return (
-      <List className={classes.list} dense>
-        {items.map(item => (
-          <ItemListItem
-            selected={selectedItemId === item.id}
-            key={item.id}
-            item={item}
-            selectItem={selectItem}
-            removeItem={removeItem}
-          />
-        ))}
-      </List>
-    );
-  }
-}
+const ItemList = (props: Props) => {
+  const {
+    selectItem,
+    classes,
+    removeItem,
+    items,
+    selectedItemId
+  } = props;
+  return (
+    <List className={classes.list} dense>
+      {items.map(item => (
+        <ItemListItem
+          selected={selectedItemId === item.id}
+          key={item.id}
+          item={item}
+          selectItem={selectItem}
+          removeItem={removeItem}
+        />
+      ))}
+    </List>
+  );
+};
 
 export default withStyles(styles)(ItemList);

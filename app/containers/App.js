@@ -1,8 +1,8 @@
 // @flow
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
-import { bindActionCreators } from "redux";
+import React, {Component} from 'react';
+import {connect} from 'react-redux';
+import {createMuiTheme, MuiThemeProvider} from '@material-ui/core/styles';
+import {bindActionCreators} from "redux";
 import _ from "lodash";
 import * as optionsActions from "../actions/options";
 
@@ -43,7 +43,7 @@ class App extends Component<Props> {
   };
 
   componentWillMount() {
-    const { getOptionsFromStore, lightTheme } = this.props;
+    const {getOptionsFromStore, lightTheme} = this.props;
     getOptionsFromStore();
     const updatedTheme = {
       palette: {
@@ -58,8 +58,8 @@ class App extends Component<Props> {
   }
 
   componentDidUpdate() {
-    const { lightTheme } = this.props;
-    const { theme } = this.state;
+    const {lightTheme} = this.props;
+    const {theme} = this.state;
 
     const updatedType = lightTheme ? 'light' : 'dark';
 
@@ -78,11 +78,11 @@ class App extends Component<Props> {
   }
 
   render() {
-    const { children } = this.props;
-    const { theme } = this.state;
+    const {children} = this.props;
+    const {theme} = this.state;
     return (
       <MuiThemeProvider theme={theme}>
-        <AppHeader />
+        <AppHeader/>
         <React.Fragment>{children}</React.Fragment>
       </MuiThemeProvider>
     );
@@ -93,12 +93,7 @@ const mapStateToProps = state => ({
   lightTheme: state.options.lightTheme
 });
 
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators(
-    _.assign({}, optionsActions),
-    dispatch
-  );
-}
+const mapDispatchToProps = (dispatch) => (bindActionCreators(_.assign({}, optionsActions), dispatch));
 
 export default connect(
   mapStateToProps,

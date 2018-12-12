@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import Select from '@material-ui/core/Select';
@@ -17,27 +17,24 @@ type Props = {
   menuCollapsed: boolean
 };
 
-class ListFilter extends Component<Props> {
-  props: Props;
-
-  render() {
-    const {
-      filterItems,
-      filterItemsByType,
-      types,
-      filterType,
-      isFiltered,
-      resetFilters,
-      menuCollapsed
-    } = this.props;
-    return (
-      <div>
+const ListFilter = (props: Props) => {
+  const {
+    filterItems,
+    filterItemsByType,
+    types,
+    filterType,
+    isFiltered,
+    resetFilters,
+    menuCollapsed
+  } = props;
+  return (
+    <div>
       {(menuCollapsed) ?
-        (<div />)
+        (<div/>)
 
-          :
+        :
 
-          (<Grid container direction="row" justify="center" alignItems="center" spacing={16}>
+        (<Grid container direction="row" justify="center" alignItems="center" spacing={16}>
           <Grid item xs={6}>
             <TextField
               autoFocus
@@ -62,14 +59,13 @@ class ListFilter extends Component<Props> {
           </Grid>
           <Grid item xs={2}>
             <Button disabled={!isFiltered} onClick={resetFilters} size="small">
-              <CancelIcon color="default" />
+              <CancelIcon color="default"/>
             </Button>
           </Grid>
         </Grid>)
       }
-      </div>
-    );
-  }
-}
+    </div>
+  );
+};
 
 export default ListFilter;
