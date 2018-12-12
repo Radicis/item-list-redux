@@ -59,7 +59,7 @@ const ListFilter = (props: Props) => {
           </Grid>
           <Grid item xs={2}>
             <Button disabled={!isFiltered} onClick={resetFilters} size="small">
-              <CancelIcon color="default"/>
+              <CancelIcon color="inherit"/>
             </Button>
           </Grid>
         </Grid>)
