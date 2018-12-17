@@ -4,6 +4,12 @@ First, clone the repo;
 
 And then install the dependencies with yarn.
 
+If yarn isn't installed install it globally with.
+
+```bash
+$ npm i -g yarn
+```
+
 ```bash
 $ cd item-list-redux
 $ yarn
