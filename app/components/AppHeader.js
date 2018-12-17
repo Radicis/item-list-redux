@@ -94,7 +94,7 @@ class AppHeader extends Component<Props> {
     const { dialogCreateNewOpen, dialogOptionsOpen } = this.state;
     return (
       <div>
-        <AppBar position="sticky" color="default" style={{WebkitAppRegion: 'drag'}}>
+        <AppBar position="sticky" color="default">
           <Toolbar>
             <IconButton onClick={toggleMenuCollapse} color="inherit" aria-label="Menu">
               {(menuCollapsed) ? ( <ArrowRight />) : ( <ArrowLeft />)}

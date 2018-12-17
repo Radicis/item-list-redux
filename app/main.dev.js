@@ -74,7 +74,6 @@ app.on('ready', async () => {
     show: false,
     width: 1070,
     useContentSize: true,
-    frame: false,
     height: 650
   });
 
