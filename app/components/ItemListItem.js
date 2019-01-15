@@ -1,5 +1,6 @@
 // @flow
 import React from 'react';
+import { withStyles } from '@material-ui/core/styles';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
@@ -9,23 +10,31 @@ import DeleteForeverOutlinedIcon from '@material-ui/icons/DeleteForeverSharp';
 import CodeIcon from '@material-ui/icons/Code';
 import TextFieldsIcon from '@material-ui/icons/TextFields';
 
+const styles = () => ({
+  item: {
+    paddingLeft: 5
+  }
+});
+
 type Props = {
   item: object,
   selected: boolean,
   selectItem: () => void,
-  removeItem: () => void
+  removeItem: () => void,
+  classes: object
 };
 
 const ItemListItem = (props: Props) => {
-  const {item, selectItem, removeItem, selected} = props;
+  const { classes, item, selectItem, removeItem, selected } = props;
   return (
-    <ListItem button selected={selected} onClick={() => selectItem(item)}>
+    <ListItem
+      button
+      className={classes.item}
+      selected={selected}
+      onClick={() => selectItem(item)}
+    >
       <Avatar>
-        {!item.type || item.type === 'text' ? (
-          <TextFieldsIcon/>
-        ) : (
-          <CodeIcon/>
-        )}
+        {!item.type || item.type === 'text' ? <TextFieldsIcon /> : <CodeIcon />}
       </Avatar>
       <ListItemText
         primary={item.title}
@@ -33,11 +42,11 @@ const ItemListItem = (props: Props) => {
       />
       <ListItemSecondaryAction>
         <IconButton aria-label="Delete" onClick={() => removeItem(item.id)}>
-          <DeleteForeverOutlinedIcon style={{fontSize: 20}}/>
+          <DeleteForeverOutlinedIcon style={{ fontSize: 20 }} />
         </IconButton>
       </ListItemSecondaryAction>
     </ListItem>
   );
 };
 
-export default ItemListItem;
+export default withStyles(styles)(ItemListItem);

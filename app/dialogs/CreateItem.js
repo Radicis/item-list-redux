@@ -56,6 +56,12 @@ class CreateNewItem extends Component<Props> {
             label="Name"
             value={newItemName}
             onChange={this.handleNameChange}
+            onKeyPress={(ev) => {
+              if (ev.key === 'Enter') {
+                ev.preventDefault();
+                this.handleOk();
+              }
+            }}
             type="text"
             fullWidth
           />

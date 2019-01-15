@@ -1,8 +1,8 @@
 // @flow
-import React, {Component} from 'react';
-import {bindActionCreators} from 'redux';
-import {connect} from 'react-redux';
-import {withStyles} from '@material-ui/core/styles';
+import React, { Component } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import _ from 'lodash';
 
@@ -14,13 +14,16 @@ import ItemList from '../components/ItemList';
 
 const styles = () => ({
   fullHeight: {
-    height: '100%'
+    height: '100%',
+    overflow: 'hidden'
   },
   overflowScroll: {
-    height: '100%',
+    height: 'calc(100% - 50px)',
     overflowY: 'auto',
-    overflowX: 'hidden',
-    paddingBottom: '100px !important' // gets overwritten
+    overflowX: 'hidden'
+  },
+  padding: {
+    paddingTop: 10
   }
 });
 
@@ -48,7 +51,7 @@ class ItemListContainer extends Component<Props> {
    * On mount, get the items from the store and set the filter
    */
   componentWillMount() {
-    const {getItemsFromStore, items} = this.props;
+    const { getItemsFromStore, items } = this.props;
     getItemsFromStore();
     this.setState({
       filterItems: items,
@@ -61,7 +64,7 @@ class ItemListContainer extends Component<Props> {
    * @param prevProps
    */
   componentDidUpdate(prevProps) {
-    const {items} = this.props;
+    const { items } = this.props;
     if (!_.isEqual(prevProps.items, items)) {
       this.setState({
         filterItems: items,
@@ -95,8 +98,8 @@ class ItemListContainer extends Component<Props> {
    * @param event
    */
   filterItems = event => {
-    const {items} = this.props;
-    const {filterType} = this.state;
+    const { items } = this.props;
+    const { filterType } = this.state;
     const filterEvent = event.target.value;
 
     const filteredItems = _.filter(
@@ -107,8 +110,8 @@ class ItemListContainer extends Component<Props> {
     this.setState({
       filterItems: filterEvent
         ? _.filter(filteredItems, i =>
-          i.title.toUpperCase().includes(filterEvent.toUpperCase())
-        )
+            i.title.toUpperCase().includes(filterEvent.toUpperCase())
+          )
         : filteredItems
     });
   };
@@ -118,7 +121,7 @@ class ItemListContainer extends Component<Props> {
    * @param event
    */
   filterItemsByType = event => {
-    const {filterItems} = this.state;
+    const { filterItems } = this.state;
     const type = event.target.value;
     this.setState({
       filterItems: _.filter(
@@ -134,13 +137,13 @@ class ItemListContainer extends Component<Props> {
    * @param itemId
    */
   removeItem = itemId => {
-    const {removeItem} = this.props;
+    const { removeItem } = this.props;
     removeItem(itemId);
     this.closeDialog();
   };
 
   resetFilters = () => {
-    const {items} = this.props;
+    const { items } = this.props;
     this.setState({
       filterItems: items,
       filterType: 'all'
@@ -148,11 +151,17 @@ class ItemListContainer extends Component<Props> {
   };
 
   render() {
-    const {selectItem, classes, item, items} = this.props;
-    const {filterItems, dialogOpen, itemId, types, filterType} = this.state;
+    const { selectItem, classes, item, items } = this.props;
+    const { filterItems, dialogOpen, itemId, types, filterType } = this.state;
     return (
-      <Grid container direction="row" alignItems="stretch" spacing={16} className={classes.fullHeight}>
-        <Grid item xs={12}>
+      <Grid
+        container
+        direction="row"
+        alignItems="stretch"
+        spacing={0}
+        className={classes.fullHeight}
+      >
+        <Grid item xs={12} className={classes.padding}>
           <ListFilter
             types={_.uniq(types)}
             filterType={filterType}
@@ -186,7 +195,8 @@ const mapStateToProps = state => ({
   item: state.items.item
 });
 
-const mapDispatchToProps = (dispatch) => (bindActionCreators(_.assign({}, itemActions), dispatch));
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(_.assign({}, itemActions), dispatch);
 
 export default connect(
   mapStateToProps,

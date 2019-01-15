@@ -131,5 +131,6 @@ export function createNewItem(itemName) {
     storeItems.push(newItem);
     JSONStore.set('items', storeItems);
     dispatch(getItemsFromStore());
+    dispatch(selectItem(newItem));
   };
 }

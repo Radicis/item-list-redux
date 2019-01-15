@@ -1,40 +1,70 @@
 // @flow
 import React, { Component } from 'react';
-import {withStyles} from '@material-ui/core/styles';
-import {bindActionCreators} from "redux";
-import _ from "lodash";
-import connect from "react-redux/es/connect/connect";
+import { withStyles } from '@material-ui/core/styles';
+import classNames from 'classnames';
+
 import Typography from '@material-ui/core/Typography';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
+import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
 import AddCircleRounded from '@material-ui/icons/AddCircleRounded';
-import ArrowLeft from '@material-ui/icons/ArrowBack';
-import ArrowRight from '@material-ui/icons/ArrowForward';
 import Settings from '@material-ui/icons/Settings';
+import MenuIcon from '@material-ui/icons/Menu';
+import InfoIcon from '@material-ui/icons/Info';
 
-import * as itemActions from '../actions/items';
-import * as optionsActions from '../actions/options';
+import CreateNewItem from '../dialogs/CreateItem';
+import SetOptions from '../dialogs/SetOptions';
 
-import CreateNewItem from "../dialogs/CreateItem";
-import SetOptions from "../dialogs/SetOptions";
+const drawerWidth = 400;
 
-const styles = () => ({
+const styles = theme => ({
   grow: {
     flexGrow: 1
   },
+  appBar: {
+    transition: theme.transitions.create(['margin', 'width'], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen
+    })
+  },
+  appBarShift: {
+    width: `calc(100% - ${drawerWidth}px)`,
+    marginLeft: drawerWidth,
+    transition: theme.transitions.create(['margin', 'width'], {
+      easing: theme.transitions.easing.easeOut,
+      duration: theme.transitions.duration.enteringScreen
+    })
+  },
+  menuButton: {
+    marginLeft: 0,
+    marginRight: 10
+  },
+  hide: {
+    display: 'none'
+  },
+  fadedText: {
+    color: theme.palette.primary.dark
+  },
+  connected: {
+    color: '#1e783d'
+  },
+  notConnected: {
+    color: '#7e1300'
+  }
 });
 
 type Props = {
   createNewItem: () => void,
   updateOptions: () => void,
   showExport: () => void,
+  toggleContentCollapse: () => void,
   toggleMenuCollapse: () => void,
   lightTheme: boolean,
   menuCollapsed: boolean,
+  hasSelectedItem: boolean,
   classes: object
 };
-
 
 class AppHeader extends Component<Props> {
   props: Props;
@@ -90,22 +120,57 @@ class AppHeader extends Component<Props> {
   };
 
   render() {
-    const { classes, lightTheme, showExport, menuCollapsed, toggleMenuCollapse } = this.props;
+    const {
+      classes,
+      lightTheme,
+      showExport,
+      menuCollapsed,
+      toggleMenuCollapse,
+      toggleContentCollapse,
+      hasSelectedItem
+    } = this.props;
     const { dialogCreateNewOpen, dialogOptionsOpen } = this.state;
     return (
       <div>
-        <AppBar position="sticky" color="default">
+        <AppBar
+          color="default"
+          position="fixed"
+          className={classNames(classes.appBar, {
+            [classes.appBarShift]: !menuCollapsed
+          })}
+        >
           <Toolbar>
-            <IconButton onClick={toggleMenuCollapse} color="inherit" aria-label="Menu">
-              {(menuCollapsed) ? ( <ArrowRight />) : ( <ArrowLeft />)}
+            <IconButton
+              onClick={toggleMenuCollapse}
+              className={classes.menuButton}
+              color="inherit"
+              aria-label="Menu"
+            >
+              <MenuIcon />
             </IconButton>
-            <Typography variant="title" className={classes.grow}>Thing Storerer!</Typography>
-            <IconButton color="default" onClick={this.openCreateNewDialog}>
-              <AddCircleRounded/>
-            </IconButton>
-            <IconButton color="default" onClick={this.openOptionsDialog}>
-              <Settings/>
-            </IconButton>
+            <Typography variant="h6" className={classes.grow}>
+              Thing Storerer!
+            </Typography>
+
+            <Tooltip title="Item Info" placement="bottom">
+              <IconButton
+                color="default"
+                onClick={toggleContentCollapse}
+                disabled={!hasSelectedItem}
+              >
+                <InfoIcon />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Add Item" placement="bottom">
+              <IconButton color="default" onClick={this.openCreateNewDialog}>
+                <AddCircleRounded />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Settings" placement="bottom">
+              <IconButton color="default" onClick={this.openOptionsDialog}>
+                <Settings />
+              </IconButton>
+            </Tooltip>
           </Toolbar>
         </AppBar>
         <CreateNewItem
@@ -124,16 +189,6 @@ class AppHeader extends Component<Props> {
       </div>
     );
   }
-};
+}
 
-const mapStateToProps = state => ({
-  lightTheme: state.options.lightTheme,
-  menuCollapsed: state.options.menuCollapsed
-});
-
-const mapDispatchToProps = (dispatch) => (bindActionCreators(_.assign({}, itemActions, optionsActions), dispatch));
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withStyles(styles)(AppHeader));
+export default withStyles(styles)(AppHeader);

@@ -6,6 +6,7 @@ import { selectItem } from './items';
 
 export const SET_OPTIONS = 'SET_OPTIONS';
 export const TOGGLE_MENU = 'TOGGLE_MENU';
+export const TOGGLE_CONTENT = 'TOGGLE_CONTENT';
 
 const JSONStore = new Store();
 
@@ -44,16 +45,24 @@ export function updateOptions(lightTheme) {
 export function showExport() {
   return (dispatch: Dispatch) => {
     const storeItems = JSONStore.get('items');
-    dispatch(selectItem({
-      title: 'EXPORT',
-      content: JSON.stringify(storeItems),
-      type: 'json'
-    }));
-  }
+    dispatch(
+      selectItem({
+        title: 'EXPORT',
+        content: JSON.stringify(storeItems),
+        type: 'json'
+      })
+    );
+  };
 }
 
 export function toggleMenuCollapse() {
   return {
     type: TOGGLE_MENU
+  };
+}
+
+export function toggleContentCollapse() {
+  return {
+    type: TOGGLE_CONTENT
   };
 }

@@ -1,31 +1,19 @@
 // @flow
 import React from 'react';
 import List from '@material-ui/core/List';
-import {withStyles} from '@material-ui/core/styles';
 import ItemListItem from './ItemListItem';
-
-const styles = () => ({
-  list: {}
-});
 
 type Props = {
   items: array,
   selectItem: () => void,
   removeItem: () => void,
-  classes: object,
   selectedItemId: string
 };
 
 const ItemList = (props: Props) => {
-  const {
-    selectItem,
-    classes,
-    removeItem,
-    items,
-    selectedItemId
-  } = props;
+  const { selectItem, removeItem, items, selectedItemId } = props;
   return (
-    <List className={classes.list} dense>
+    <List dense>
       {items.map(item => (
         <ItemListItem
           selected={selectedItemId === item.id}
@@ -39,4 +27,4 @@ const ItemList = (props: Props) => {
   );
 };
 
-export default withStyles(styles)(ItemList);
+export default ItemList;

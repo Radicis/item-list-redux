@@ -1,5 +1,5 @@
 // @flow
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import Select from '@material-ui/core/Select';
@@ -29,12 +29,16 @@ const ListFilter = (props: Props) => {
   } = props;
   return (
     <div>
-      {(menuCollapsed) ?
-        (<div/>)
-
-        :
-
-        (<Grid container direction="row" justify="center" alignItems="center" spacing={16}>
+      {menuCollapsed ? (
+        <div />
+      ) : (
+        <Grid
+          container
+          direction="row"
+          justify="center"
+          alignItems="center"
+          spacing={16}
+        >
           <Grid item xs={6}>
             <TextField
               autoFocus
@@ -59,11 +63,11 @@ const ListFilter = (props: Props) => {
           </Grid>
           <Grid item xs={2}>
             <Button disabled={!isFiltered} onClick={resetFilters} size="small">
-              <CancelIcon color="inherit"/>
+              <CancelIcon color="inherit" />
             </Button>
           </Grid>
-        </Grid>)
-      }
+        </Grid>
+      )}
     </div>
   );
 };

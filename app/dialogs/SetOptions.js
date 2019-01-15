@@ -13,17 +13,17 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 const styles = theme => ({
   button: {
-    margin: theme.spacing.unit,
+    margin: theme.spacing.unit
   },
   leftIcon: {
-    marginRight: theme.spacing.unit,
+    marginRight: theme.spacing.unit
   },
   rightIcon: {
-    marginLeft: theme.spacing.unit,
+    marginLeft: theme.spacing.unit
   },
   iconSmall: {
-    fontSize: 20,
-  },
+    fontSize: 20
+  }
 });
 
 type Props = {
@@ -42,11 +42,11 @@ class SetOptions extends Component<Props> {
     localLightTheme: false
   };
 
-  componentWillMount () {
+  componentWillMount() {
     const { lightTheme } = this.props;
     this.setState({
       localLightTheme: lightTheme
-    })
+    });
   }
 
   /**
@@ -84,7 +84,13 @@ class SetOptions extends Component<Props> {
             />
           </FormGroup>
 
-          <Button className={classes.button} size="small" variant="contained" color="secondary" onClick={handleExport}>
+          <Button
+            className={classes.button}
+            size="small"
+            variant="contained"
+            color="secondary"
+            onClick={handleExport}
+          >
             <CloudUploadIcon className={classes.leftIcon} />
             Export
           </Button>
