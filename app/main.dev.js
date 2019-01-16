@@ -11,20 +11,10 @@
  * @flow
  */
 import { app, BrowserWindow } from 'electron';
-import { autoUpdater } from 'electron-updater';
-import log from 'electron-log';
 import MenuBuilder from './menu';
 
 console.log('Root path');
 console.log(app.getPath('userData'));
-
-export default class AppUpdater {
-  constructor() {
-    log.transports.file.level = 'info';
-    autoUpdater.logger = log;
-    autoUpdater.checkForUpdatesAndNotify();
-  }
-}
 
 let mainWindow = null;
 
@@ -50,29 +40,7 @@ const installExtensions = async () => {
   ).catch(console.log);
 };
 
-/**
- * Add event listeners...
- */
-
-app.on('activate', () => {
-  if (mainWindow) {
-    mainWindow.restore();
-  } else {
-    // Something went wrong
-    app.quit();
-  }
-});
-
-app.on('window-all-closed', () => {
-  // Respect the OSX convention of having the application in memory even
-  // after all windows have been closed
-  const isWin = process.platform === "win32";
-  if (isWin) {
-    app.quit();
-  }
-});
-
-app.on('ready', async () => {
+const createWindow = async () => {
   if (
     process.env.NODE_ENV === 'development' ||
     process.env.DEBUG_PROD === 'true'
@@ -103,15 +71,45 @@ app.on('ready', async () => {
     }
   });
 
-  mainWindow.on('close', event=>{
-    event.preventDefault();
-    mainWindow.hide();
+  // Emitted when the window is closed.
+  mainWindow.on('closed', () => {
+    // Dereference the window object, usually you would store windows
+    // in an array if your app supports multi windows, this is the time
+    // when you should delete the corresponding element.
+    mainWindow = null;
   });
 
   const menuBuilder = new MenuBuilder(mainWindow);
   menuBuilder.buildMenu();
+} ;
 
-  // Remove this if your app does not use auto updates
-  // eslint-disable-next-line
-  new AppUpdater();
+/**
+ * Add event listeners...
+ */
+
+// Mac-only, when the user clicks the doc icon
+app.on('activate', (e, hasVisibleWindows) => {
+  // Create a new window when clicking the doc icon if there isn't one open
+  if (!hasVisibleWindows) {
+    try {
+      createWindow();
+    } catch (err) {
+      // This might happen if 'ready' hasn't fired yet. So we're just going
+      // to silence these errors.
+      console.log('[main] App not ready to "activate" yet');
+    }
+  }
+});
+
+app.on('window-all-closed', () => {
+  // Respect the OSX convention of having the application in memory even
+  // after all windows have been closed
+  const isWin = process.platform === "win32";
+  if (isWin) {
+    app.quit();
+  }
+});
+
+app.on('ready', async () => {
+  createWindow();
 });

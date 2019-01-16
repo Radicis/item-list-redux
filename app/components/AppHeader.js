@@ -148,7 +148,7 @@ class AppHeader extends Component<Props> {
               <MenuIcon />
             </IconButton>
             <Typography variant="h6" color="default" className={classes.grow}>
-              Thing Storerer <span className={classes.subHeading}>v1.0.1</span>
+              Thing Storerer <span className={classes.subHeading}>v1.1.0</span>
             </Typography>
 
             <Tooltip title="Item Info" placement="bottom">
