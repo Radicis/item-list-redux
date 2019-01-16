@@ -10,9 +10,27 @@ import DeleteForeverOutlinedIcon from '@material-ui/icons/DeleteForeverSharp';
 import CodeIcon from '@material-ui/icons/Code';
 import TextFieldsIcon from '@material-ui/icons/TextFields';
 
-const styles = () => ({
+const styles = theme => ({
   item: {
-    paddingLeft: 5
+    paddingLeft: 5,
+    paddingRight: 5
+  },
+  deleteButton: {
+    fontSize: 20,
+    padding: 5,
+    opacity: 0.6
+  },
+  avatar: {
+    width: 30,
+    height: 30,
+    border: '1px solid #999'
+  },
+  avatarIcon: {
+    fontSize: 20
+  },
+  typeText: {
+    color: theme.palette.secondary.main,
+    opacity: 0.6
   }
 });
 
@@ -26,6 +44,7 @@ type Props = {
 
 const ItemListItem = (props: Props) => {
   const { classes, item, selectItem, removeItem, selected } = props;
+
   return (
     <ListItem
       button
@@ -33,16 +52,32 @@ const ItemListItem = (props: Props) => {
       selected={selected}
       onClick={() => selectItem(item)}
     >
-      <Avatar>
-        {!item.type || item.type === 'text' ? <TextFieldsIcon /> : <CodeIcon />}
+      <Avatar className={classes.avatar}>
+        {!item.type || item.type === 'text' ? (
+          <TextFieldsIcon className={classes.avatarIcon} />
+        ) : (
+          <CodeIcon className={classes.avatarIcon} />
+        )}
       </Avatar>
       <ListItemText
         primary={item.title}
-        secondary={!item.type || item.type === 'text' ? '' : item.type}
+        secondary={
+          !item.type || item.type === 'text' ? (
+            ''
+          ) : (
+            <React.Fragment>
+              <span className={classes.typeText}>{item.type}</span>
+            </React.Fragment>
+          )
+        }
       />
       <ListItemSecondaryAction>
-        <IconButton aria-label="Delete" onClick={() => removeItem(item.id)}>
-          <DeleteForeverOutlinedIcon style={{ fontSize: 20 }} />
+        <IconButton
+          aria-label="Delete"
+          onClick={() => removeItem(item.id)}
+          className={classes.deleteButton}
+        >
+          <DeleteForeverOutlinedIcon />
         </IconButton>
       </ListItemSecondaryAction>
     </ListItem>

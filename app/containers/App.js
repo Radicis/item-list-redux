@@ -89,7 +89,7 @@ type Props = {
 };
 
 const primary = {
-  light: '#03A9F4',
+  light: '#039de2',
   main: '#607D8B',
   dark: '#455A64',
   contrastText: '#212121'

@@ -1,7 +1,7 @@
 {
   "name": "item-list",
   "productName": "Item List",
-  "version": "0.0.1",
+  "version": "1.1.0",
   "description": "Code snippet item list in react",
   "scripts": {
     "build": "concurrently \"yarn build-main\" \"yarn build-renderer\"",

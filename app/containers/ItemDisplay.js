@@ -1,6 +1,7 @@
 // @flow
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
+import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 import _ from 'lodash';
@@ -10,7 +11,6 @@ import * as itemActions from '../actions/items';
 
 import ItemContents from '../components/ItemContents';
 import ItemOptions from '../components/ItemOptions';
-import classNames from 'classnames';
 
 type Props = {
   item: object,
@@ -30,7 +30,7 @@ const styles = theme => ({
   },
   contentContainer: {
     marginTop: '-15px',
-    paddingBottom: '40px  !important',
+    paddingBottom: '45px  !important',
     height: '100%'
   },
   itemOptions: {

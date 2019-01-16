@@ -43,14 +43,13 @@ const styles = theme => ({
   hide: {
     display: 'none'
   },
-  fadedText: {
-    color: theme.palette.primary.dark
+  subHeading: {
+    fontSize: 12,
+    opacity: 0.5
   },
-  connected: {
-    color: '#1e783d'
-  },
-  notConnected: {
-    color: '#7e1300'
+  borderIcon: {
+    borderRadius: 12,
+    border: '1px solid #999'
   }
 });
 
@@ -143,32 +142,32 @@ class AppHeader extends Component<Props> {
             <IconButton
               onClick={toggleMenuCollapse}
               className={classes.menuButton}
-              color="inherit"
+              color="default"
               aria-label="Menu"
             >
               <MenuIcon />
             </IconButton>
-            <Typography variant="h6" className={classes.grow}>
-              Thing Storerer!
+            <Typography variant="h6" color="default" className={classes.grow}>
+              Thing Storerer <span className={classes.subHeading}>v1.0.1</span>
             </Typography>
 
             <Tooltip title="Item Info" placement="bottom">
               <IconButton
-                color="default"
+                color="secondary"
                 onClick={toggleContentCollapse}
                 disabled={!hasSelectedItem}
               >
-                <InfoIcon />
+                <InfoIcon className={classes.borderIcon} />
               </IconButton>
             </Tooltip>
             <Tooltip title="Add Item" placement="bottom">
               <IconButton color="default" onClick={this.openCreateNewDialog}>
-                <AddCircleRounded />
+                <AddCircleRounded className={classes.borderIcon} />
               </IconButton>
             </Tooltip>
             <Tooltip title="Settings" placement="bottom">
               <IconButton color="default" onClick={this.openOptionsDialog}>
-                <Settings />
+                <Settings className={classes.borderIcon} />
               </IconButton>
             </Tooltip>
           </Toolbar>

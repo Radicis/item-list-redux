@@ -20,10 +20,15 @@ class ItemOptions extends Component<Props> {
       'java',
       'text',
       'css',
+      'sass',
+      'sass',
       'html',
       'json',
       'kotlin',
       'yaml',
+      'xml',
+      'c_cpp',
+      'python',
       'sh'
     ]
   };

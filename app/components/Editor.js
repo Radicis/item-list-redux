@@ -6,11 +6,16 @@ import 'brace/mode/mysql';
 import 'brace/mode/javascript';
 import 'brace/mode/java';
 import 'brace/mode/css';
+import 'brace/mode/sass';
+import 'brace/mode/scss';
 import 'brace/mode/html';
 import 'brace/mode/json';
 import 'brace/mode/kotlin';
 import 'brace/mode/yaml';
+import 'brace/mode/xml';
 import 'brace/mode/sh';
+import 'brace/mode/c_cpp';
+import 'brace/mode/python';
 
 import 'brace/theme/monokai';
 import 'brace/theme/github';
