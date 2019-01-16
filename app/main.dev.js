@@ -54,10 +54,20 @@ const installExtensions = async () => {
  * Add event listeners...
  */
 
+app.on('activate', () => {
+  if (mainWindow) {
+    mainWindow.restore();
+  } else {
+    // Something went wrong
+    app.quit();
+  }
+});
+
 app.on('window-all-closed', () => {
   // Respect the OSX convention of having the application in memory even
   // after all windows have been closed
-  if (process.platform !== 'darwin') {
+  const isWin = process.platform === "win32";
+  if (isWin) {
     app.quit();
   }
 });
@@ -93,8 +103,9 @@ app.on('ready', async () => {
     }
   });
 
-  mainWindow.on('closed', () => {
-    mainWindow = null;
+  mainWindow.on('close', event=>{
+    event.preventDefault();
+    mainWindow.hide();
   });
 
   const menuBuilder = new MenuBuilder(mainWindow);
